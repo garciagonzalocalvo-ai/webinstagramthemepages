@@ -8,26 +8,34 @@
     * {
       box-sizing: border-box;
       user-select: none;
+      -webkit-user-select: none;
     }
 
-    body {
+    html, body {
       margin: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      background: #d9d9d9;
       font-family: "Tahoma", "MS Sans Serif", sans-serif;
+      background: #d9d9d9;
       cursor: default;
     }
 
+    body {
+      position: relative;
+    }
+
     .screen {
+      position: relative;
       width: 100vw;
       height: 100vh;
-      position: relative;
       overflow: hidden;
+      background: #d9d9d9;
+      transition: filter 2.2s ease, opacity 2.2s ease, background 2.2s ease;
     }
 
     .window {
       position: absolute;
-      width: 440px;
       background: #c0c0c0;
       border: 2px solid #ffffff;
       border-right-color: #404040;
@@ -60,7 +68,6 @@
       align-items: center;
       justify-content: center;
       font-size: 13px;
-      cursor: pointer;
       line-height: 1;
     }
 
@@ -128,20 +135,15 @@
       border-right-color: #404040;
       border-bottom-color: #404040;
       font-size: 15px;
-      cursor: pointer;
       text-align: center;
     }
 
-    .btn:active {
-      border: 2px solid #404040;
-      border-right-color: #fff;
-      border-bottom-color: #fff;
-    }
-
     .center-window {
+      width: 440px;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      z-index: 5;
     }
 
     .popup {
@@ -175,8 +177,98 @@
       transform: translateX(-50%);
       color: #555;
       font-size: 14px;
-      opacity: 0.9;
+      opacity: 0.95;
       text-align: center;
+      z-index: 6;
+    }
+
+    .reset-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(217, 217, 217, 0.96);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .reset-box {
+      width: min(560px, 88vw);
+      background: #c0c0c0;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    .reset-content {
+      padding: 24px 24px 28px;
+    }
+
+    .reset-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #111;
+      margin-bottom: 16px;
+    }
+
+    .reset-subtitle {
+      font-size: 15px;
+      color: #222;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .progress-outer {
+      width: 100%;
+      height: 30px;
+      background: #b7b7b7;
+      border: 2px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      padding: 2px;
+    }
+
+    .progress-inner {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #0a2c9c, #2a9df4);
+      transition: width 0.08s linear;
+    }
+
+    .progress-label {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #111;
+      text-align: right;
+    }
+
+    .blackout {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 400;
+      transition: opacity 3.5s ease;
+    }
+
+    .joke-final {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #000;
+      color: #fff;
+      font-weight: 900;
+      font-size: clamp(28px, 5vw, 72px);
+      letter-spacing: 1px;
+      opacity: 0;
+      z-index: 500;
+      transition: opacity 1.8s ease;
+      padding: 30px;
     }
   </style>
 </head>
@@ -201,16 +293,46 @@ Press Cancel to Quit.</div>
       </div>
     </div>
 
-    <div class="hint" id="hint">Esperando error crítico del sistema...</div>
+    <div class="hint" id="hint">Esperando respuesta del sistema...</div>
+
+    <div class="reset-overlay" id="resetOverlay">
+      <div class="reset-box">
+        <div class="title-bar">
+          <span>System Recovery</span>
+          <div class="title-close">×</div>
+        </div>
+        <div class="reset-content">
+          <div class="reset-title">Error reseteando el dispositivo</div>
+          <div class="reset-subtitle">
+            El sistema está intentando restaurar los servicios críticos.
+            No apagues el dispositivo.
+          </div>
+          <div class="progress-outer">
+            <div class="progress-inner" id="progressInner"></div>
+          </div>
+          <div class="progress-label" id="progressLabel">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blackout" id="blackout"></div>
+    <div class="joke-final" id="jokeFinal">ERA UNA BROMA JA JA JA😎🎞️🤣</div>
   </div>
 
   <script>
     const screen = document.getElementById("screen");
     const hint = document.getElementById("hint");
-    const popups = [];
+    const resetOverlay = document.getElementById("resetOverlay");
+    const progressInner = document.getElementById("progressInner");
+    const progressLabel = document.getElementById("progressLabel");
+    const blackout = document.getElementById("blackout");
+    const jokeFinal = document.getElementById("jokeFinal");
 
-    let popupInterval = null;
-    let totalCreated = 0;
+    const popups = [];
+    let popupSpawner = null;
+    let popupAnimationRunning = true;
+    let popupCount = 0;
+    let chaosEnded = false;
 
     function randomBetween(min, max) {
       return Math.random() * (max - min) + min;
@@ -221,9 +343,10 @@ Press Cancel to Quit.</div>
     }
 
     function createPopup() {
+      if (chaosEnded) return;
+
       const popup = document.createElement("div");
       popup.className = "window popup";
-
       popup.innerHTML = `
         <div class="title-bar">
           <span>System Error</span>
@@ -242,42 +365,39 @@ Unable to close this window.</div>
         </div>
       `;
 
-      const maxX = Math.max(20, window.innerWidth - 340);
-      const maxY = Math.max(20, window.innerHeight - 220);
+      const width = 320;
+      const height = 170;
 
-      popup.style.left = `${randomBetween(10, maxX)}px`;
-      popup.style.top = `${randomBetween(10, maxY)}px`;
+      popup.style.left = `${randomBetween(10, Math.max(20, window.innerWidth - width - 10))}px`;
+      popup.style.top = `${randomBetween(10, Math.max(20, window.innerHeight - height - 10))}px`;
 
       const state = {
         el: popup,
-        vx: randomBetween(-2.6, 2.6) || 1.8,
-        vy: randomBetween(-2.6, 2.6) || -1.8,
-        width: 320,
-        height: 170
+        vx: randomBetween(-2.8, 2.8) || 2,
+        vy: randomBetween(-2.8, 2.8) || -2
       };
 
       popups.push(state);
       screen.appendChild(popup);
+      popupCount++;
 
       attachEscapeBehavior(state);
-      totalCreated++;
     }
 
     function movePopupAway(state, mouseX, mouseY) {
       const rect = state.el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
 
-      let dx = centerX - mouseX;
-      let dy = centerY - mouseY;
+      let dx = cx - mouseX;
+      let dy = cy - mouseY;
       const dist = Math.hypot(dx, dy) || 1;
 
       dx /= dist;
       dy /= dist;
 
-      const boost = 85;
-      let nextLeft = rect.left + dx * boost;
-      let nextTop = rect.top + dy * boost;
+      let nextLeft = rect.left + dx * 90;
+      let nextTop = rect.top + dy * 90;
 
       nextLeft = clamp(nextLeft, 0, window.innerWidth - rect.width);
       nextTop = clamp(nextTop, 0, window.innerHeight - rect.height);
@@ -285,8 +405,8 @@ Unable to close this window.</div>
       state.el.style.left = `${nextLeft}px`;
       state.el.style.top = `${nextTop}px`;
 
-      state.vx = dx * randomBetween(1.5, 3.5);
-      state.vy = dy * randomBetween(1.5, 3.5);
+      state.vx = dx * randomBetween(1.8, 3.8);
+      state.vy = dy * randomBetween(1.8, 3.8);
     }
 
     function attachEscapeBehavior(state) {
@@ -297,10 +417,10 @@ Unable to close this window.</div>
         const localX = e.clientX - rect.left;
         const localY = e.clientY - rect.top;
 
-        const nearTopRight = localX > rect.width - 90 && localY < 50;
+        const nearClose = localX > rect.width - 90 && localY < 55;
         const nearButtons = localY > rect.height - 70;
 
-        if (nearTopRight || nearButtons) {
+        if (nearClose || nearButtons) {
           movePopupAway(state, e.clientX, e.clientY);
         }
       });
@@ -309,7 +429,7 @@ Unable to close this window.</div>
         movePopupAway(state, e.clientX, e.clientY);
       });
 
-      popup.querySelectorAll(".title-close, .fake-close").forEach(btn => {
+      popup.querySelectorAll(".title-close, .fake-close").forEach((btn) => {
         btn.addEventListener("mouseenter", (e) => {
           movePopupAway(state, e.clientX, e.clientY);
         });
@@ -319,7 +439,7 @@ Unable to close this window.</div>
           e.stopPropagation();
           movePopupAway(state, e.clientX, e.clientY);
 
-          if (totalCreated < 40) {
+          if (!chaosEnded && popupCount < 40) {
             createPopup();
           }
         });
@@ -327,9 +447,12 @@ Unable to close this window.</div>
     }
 
     function animatePopups() {
-      for (const state of popups) {
-        const rect = state.el.getBoundingClientRect();
+      if (!popupAnimationRunning) return;
 
+      for (const state of popups) {
+        if (!state.el.isConnected) continue;
+
+        const rect = state.el.getBoundingClientRect();
         let left = rect.left + state.vx;
         let top = rect.top + state.vy;
 
@@ -356,26 +479,69 @@ Unable to close this window.</div>
       createPopup();
       createPopup();
 
-      popupInterval = setInterval(() => {
-        if (totalCreated < 25) {
+      popupSpawner = setInterval(() => {
+        if (popupCount < 24 && !chaosEnded) {
           createPopup();
-        } else {
-          clearInterval(popupInterval);
-          hint.textContent = "El sistema ya no responde.";
         }
-      }, 1200);
+      }, 900);
     }
 
-    setTimeout(startChaos, 10000);
-    animatePopups();
+    function endChaosAndStartReset() {
+      chaosEnded = true;
+      hint.textContent = "Restaurando sistema...";
+      if (popupSpawner) clearInterval(popupSpawner);
+
+      resetOverlay.style.display = "flex";
+      startProgressBar();
+    }
+
+    function startProgressBar() {
+      const duration = 7000;
+      const start = performance.now();
+
+      function step(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const percent = Math.round(progress * 100);
+
+        progressInner.style.width = `${percent}%`;
+        progressLabel.textContent = `${percent}%`;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          startFadeToBlack();
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function startFadeToBlack() {
+      screen.style.filter = "blur(10px) brightness(0.25)";
+      blackout.style.opacity = "1";
+
+      setTimeout(() => {
+        jokeFinal.style.opacity = "1";
+      }, 3300);
+    }
 
     window.addEventListener("resize", () => {
       for (const state of popups) {
+        if (!state.el.isConnected) continue;
         const rect = state.el.getBoundingClientRect();
         state.el.style.left = `${clamp(rect.left, 0, window.innerWidth - rect.width)}px`;
         state.el.style.top = `${clamp(rect.top, 0, window.innerHeight - rect.height)}px`;
       }
     });
+
+    animatePopups();
+
+    // 0-10s: error principal
+    // 10-20s: caos con avisos
+    // 20s: reset + barra 7s
+    setTimeout(startChaos, 10000);
+    setTimeout(endChaosAndStartReset, 20000);
   </script>
 </body>
 </html>
