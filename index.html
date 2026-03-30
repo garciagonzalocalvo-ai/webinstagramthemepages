@@ -3,46 +3,379 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 Not Found</title>
+  <title>System Error</title>
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      user-select: none;
     }
 
     body {
-      background: #0f0f0f;
-      color: white;
-      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      background: #d9d9d9;
+      font-family: "Tahoma", "MS Sans Serif", sans-serif;
+      cursor: default;
     }
 
-    .hero {
+    .screen {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .window {
+      position: absolute;
+      width: 440px;
+      background: #c0c0c0;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    .title-bar {
+      height: 28px;
+      background: linear-gradient(90deg, #0a2c9c, #2a9df4);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0.2px;
+    }
+
+    .title-close {
+      width: 20px;
+      height: 20px;
+      background: #c0c0c0;
+      color: black;
+      border: 1px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .content {
+      padding: 26px 20px 20px;
+    }
+
+    .message-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .error-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: red;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 4px;
+      box-shadow: inset 0 0 0 2px #ff4d4d;
+    }
+
+    .error-icon::before,
+    .error-icon::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 8px;
+      width: 24px;
+      height: 4px;
+      background: white;
+      border-radius: 2px;
+      transform-origin: center;
+    }
+
+    .error-icon::before {
+      transform: rotate(45deg);
+    }
+
+    .error-icon::after {
+      transform: rotate(-45deg);
+    }
+
+    .message-text {
+      font-size: 16px;
+      color: #111;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    .buttons {
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      gap: 26px;
+      margin-top: 26px;
+    }
+
+    .btn {
+      min-width: 120px;
+      padding: 8px 18px;
+      background: #c0c0c0;
+      border: 2px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      font-size: 15px;
+      cursor: pointer;
       text-align: center;
     }
 
-    .hero h1 {
-      font-size: 5rem;
-      font-weight: bold;
-      letter-spacing: 2px;
+    .btn:active {
+      border: 2px solid #404040;
+      border-right-color: #fff;
+      border-bottom-color: #fff;
     }
 
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.5rem;
-        padding: 0 20px;
-      }
+    .center-window {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .popup {
+      width: 320px;
+      z-index: 10;
+    }
+
+    .popup .content {
+      padding: 18px 16px 16px;
+    }
+
+    .popup .message-text {
+      font-size: 15px;
+    }
+
+    .popup .buttons {
+      margin-top: 18px;
+      gap: 14px;
+    }
+
+    .popup .btn {
+      min-width: 95px;
+      padding: 7px 12px;
+      font-size: 14px;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #555;
+      font-size: 14px;
+      opacity: 0.9;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <section class="hero">
-    <h1>ERROR 404 Not Found</h1>
-  </section>
+  <div class="screen" id="screen">
+    <div class="window center-window" id="mainWindow">
+      <div class="title-bar">
+        <span>System Error</span>
+        <div class="title-close">×</div>
+      </div>
+      <div class="content">
+        <div class="message-row">
+          <div class="error-icon"></div>
+          <div class="message-text">Runtime error.
+Press Ok to Continue.
+Press Cancel to Quit.</div>
+        </div>
+        <div class="buttons">
+          <div class="btn">OK</div>
+          <div class="btn">Cancel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hint" id="hint">Esperando error crítico del sistema...</div>
+  </div>
+
+  <script>
+    const screen = document.getElementById("screen");
+    const hint = document.getElementById("hint");
+    const popups = [];
+
+    let popupInterval = null;
+    let totalCreated = 0;
+
+    function randomBetween(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function createPopup() {
+      const popup = document.createElement("div");
+      popup.className = "window popup";
+
+      popup.innerHTML = `
+        <div class="title-bar">
+          <span>System Error</span>
+          <div class="title-close">×</div>
+        </div>
+        <div class="content">
+          <div class="message-row">
+            <div class="error-icon"></div>
+            <div class="message-text">Critical exception detected.
+Unable to close this window.</div>
+          </div>
+          <div class="buttons">
+            <div class="btn fake-close">OK</div>
+            <div class="btn fake-close">Cancel</div>
+          </div>
+        </div>
+      `;
+
+      const maxX = Math.max(20, window.innerWidth - 340);
+      const maxY = Math.max(20, window.innerHeight - 220);
+
+      popup.style.left = `${randomBetween(10, maxX)}px`;
+      popup.style.top = `${randomBetween(10, maxY)}px`;
+
+      const state = {
+        el: popup,
+        vx: randomBetween(-2.6, 2.6) || 1.8,
+        vy: randomBetween(-2.6, 2.6) || -1.8,
+        width: 320,
+        height: 170
+      };
+
+      popups.push(state);
+      screen.appendChild(popup);
+
+      attachEscapeBehavior(state);
+      totalCreated++;
+    }
+
+    function movePopupAway(state, mouseX, mouseY) {
+      const rect = state.el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      let dx = centerX - mouseX;
+      let dy = centerY - mouseY;
+      const dist = Math.hypot(dx, dy) || 1;
+
+      dx /= dist;
+      dy /= dist;
+
+      const boost = 85;
+      let nextLeft = rect.left + dx * boost;
+      let nextTop = rect.top + dy * boost;
+
+      nextLeft = clamp(nextLeft, 0, window.innerWidth - rect.width);
+      nextTop = clamp(nextTop, 0, window.innerHeight - rect.height);
+
+      state.el.style.left = `${nextLeft}px`;
+      state.el.style.top = `${nextTop}px`;
+
+      state.vx = dx * randomBetween(1.5, 3.5);
+      state.vy = dy * randomBetween(1.5, 3.5);
+    }
+
+    function attachEscapeBehavior(state) {
+      const popup = state.el;
+
+      popup.addEventListener("mousemove", (e) => {
+        const rect = popup.getBoundingClientRect();
+        const localX = e.clientX - rect.left;
+        const localY = e.clientY - rect.top;
+
+        const nearTopRight = localX > rect.width - 90 && localY < 50;
+        const nearButtons = localY > rect.height - 70;
+
+        if (nearTopRight || nearButtons) {
+          movePopupAway(state, e.clientX, e.clientY);
+        }
+      });
+
+      popup.addEventListener("mouseenter", (e) => {
+        movePopupAway(state, e.clientX, e.clientY);
+      });
+
+      popup.querySelectorAll(".title-close, .fake-close").forEach(btn => {
+        btn.addEventListener("mouseenter", (e) => {
+          movePopupAway(state, e.clientX, e.clientY);
+        });
+
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          movePopupAway(state, e.clientX, e.clientY);
+
+          if (totalCreated < 40) {
+            createPopup();
+          }
+        });
+      });
+    }
+
+    function animatePopups() {
+      for (const state of popups) {
+        const rect = state.el.getBoundingClientRect();
+
+        let left = rect.left + state.vx;
+        let top = rect.top + state.vy;
+
+        if (left <= 0 || left >= window.innerWidth - rect.width) {
+          state.vx *= -1;
+          left = clamp(left, 0, window.innerWidth - rect.width);
+        }
+
+        if (top <= 0 || top >= window.innerHeight - rect.height) {
+          state.vy *= -1;
+          top = clamp(top, 0, window.innerHeight - rect.height);
+        }
+
+        state.el.style.left = `${left}px`;
+        state.el.style.top = `${top}px`;
+      }
+
+      requestAnimationFrame(animatePopups);
+    }
+
+    function startChaos() {
+      hint.textContent = "Error crítico detectado...";
+      createPopup();
+      createPopup();
+      createPopup();
+
+      popupInterval = setInterval(() => {
+        if (totalCreated < 25) {
+          createPopup();
+        } else {
+          clearInterval(popupInterval);
+          hint.textContent = "El sistema ya no responde.";
+        }
+      }, 1200);
+    }
+
+    setTimeout(startChaos, 10000);
+    animatePopups();
+
+    window.addEventListener("resize", () => {
+      for (const state of popups) {
+        const rect = state.el.getBoundingClientRect();
+        state.el.style.left = `${clamp(rect.left, 0, window.innerWidth - rect.width)}px`;
+        state.el.style.top = `${clamp(rect.top, 0, window.innerHeight - rect.height)}px`;
+      }
+    });
+  </script>
 </body>
 </html>
