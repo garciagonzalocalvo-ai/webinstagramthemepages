@@ -602,6 +602,7 @@ Press Cancel to quit.</div>
     }
 
     function startFloatingPhase() {
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
       floatingPhase = true;
       initialWrap.style.display = "none";
 
@@ -637,6 +638,7 @@ Press Cancel to quit.</div>
       floatWindows.length = 0;
 
       processOverlay.classList.add("show");
+      if (navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 500]);
       screen.classList.add("shake");
 
       setTimeout(() => {
@@ -648,8 +650,15 @@ Press Cancel to quit.</div>
 
       setActiveTask(0);
 
-      const interval = setInterval(() => {
-        progress += random(1.5, 4.5);
+     const totalDuration = 15000; // 15 segundos
+const intervalTime = 100; // cada cuánto actualiza (ms)
+const increment = 100 / (totalDuration / intervalTime);
+
+const interval = setInterval(() => {
+  progress += increment;
+  if (navigator.vibrate && Math.random() > 0.7) {
+  navigator.vibrate(50);
+}
         if (progress > 100) progress = 100;
 
         progressFill.style.width = progress + "%";
@@ -680,10 +689,11 @@ Press Cancel to quit.</div>
 
           setTimeout(() => {
             processOverlay.style.display = "none";
+            if (navigator.vibrate) navigator.vibrate([1000, 200, 1000, 200, 1500]);
             finalMessage.classList.add("show");
           }, 2400);
         }
-      }, 140);
+    }, intervalTime);
     }
 
     function startPrank() {
