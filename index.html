@@ -1,1 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Error</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
 
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Tahoma", "MS Sans Serif", sans-serif;
+      background: #d9d9d9;
+      cursor: default;
+    }
+
+    .screen {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #d9d9d9;
+      transition: filter 2.8s ease, opacity 2.8s ease, background 2.8s ease;
+    }
+
+    .window {
+      position: absolute;
+      background: #c0c0c0;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    .title-bar {
+      height: 28px;
+      background: linear-gradient(90deg, #0a2c9c, #2a9df4);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .title-close {
+      width: 20px;
+      height: 20px;
+      background: #c0c0c0;
+      border: 1px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .content { padding: 26px 20px; }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 8px 18px;
+      background: #c0c0c0;
+      border: 2px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      cursor: pointer;
+    }
+
+    .center-window {
+      width: 440px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(217,217,217,0.95);
+    }
+
+    .dialog-box {
+      width: 500px;
+      background: #c0c0c0;
+      border: 2px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+    }
+
+    .dialog-content { padding: 20px; }
+
+    .blackout {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+      transition: opacity 3s;
+    }
+
+    .joke-final {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      font-weight: bold;
+      color: white;
+      background: black;
+      opacity: 0;
+      transition: opacity 1s;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="screen" id="screen">
+
+  <!-- ERROR PRINCIPAL -->
+  <div class="window center-window">
+    <div class="title-bar">
+      <span>System Error</span>
+      <div class="title-close">×</div>
+    </div>
+    <div class="content">
+      Runtime error.
+      <div class="buttons">
+        <div class="btn">OK</div>
+        <div class="btn">Cancel</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM -->
+  <div class="overlay" id="confirmOverlay">
+    <div class="dialog-box">
+      <div class="title-bar">
+        <span>System Reset</span>
+        <div class="title-close" id="confirmClose">×</div>
+      </div>
+      <div class="dialog-content">
+        <h3>Error quiere resetear el dispositivo</h3>
+        <p>¿Desea continuar?</p>
+        <div class="buttons">
+          <button class="btn" id="yesBtn">Sí</button>
+          <button class="btn" id="noBtn">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESET -->
+  <div class="overlay" id="resetOverlay">
+    <div class="dialog-box">
+      <div class="title-bar">
+        <span>System Recovery</span>
+      </div>
+      <div class="dialog-content">
+        <h3>Perfecto, reseteando</h3>
+        <p>
+          - limpiando el dispositivo<br>
+          - borrando el sistema<br>
+          - eliminando datos<br>
+          - restableciendo de fábrica
+        </p>
+
+        <div style="background:#999;height:20px;">
+          <div id="bar" style="height:100%;width:0%;background:blue;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blackout" id="blackout"></div>
+  <div class="joke-final" id="jokeFinal">ERA UNA BROMA JA JA JA😎🎞️🤣</div>
+
+</div>
+
+<script>
+
+const confirmOverlay = document.getElementById("confirmOverlay");
+const resetOverlay = document.getElementById("resetOverlay");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const confirmClose = document.getElementById("confirmClose");
+
+const bar = document.getElementById("bar");
+const blackout = document.getElementById("blackout");
+const jokeFinal = document.getElementById("jokeFinal");
+
+setTimeout(()=>{
+  confirmOverlay.style.display="flex";
+},2000);
+
+function startReset(){
+  confirmOverlay.style.display="none";
+  resetOverlay.style.display="flex";
+
+  let progress=0;
+  let interval=setInterval(()=>{
+    progress++;
+    bar.style.width=progress+"%";
+
+    if(progress>=100){
+      clearInterval(interval);
+      blackout.style.opacity="1";
+
+      setTimeout(()=>{
+        jokeFinal.style.opacity="1";
+      },3000);
+    }
+
+  },70);
+}
+
+yesBtn.onclick = startReset;
+
+noBtn.onclick = () => {
+  confirmOverlay.style.display="none";
+};
+
+confirmClose.onclick = () => {
+  confirmOverlay.style.display="none";
+};
+
+</script>
+
+</body>
+</html>
