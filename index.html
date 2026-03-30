@@ -2,111 +2,138 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Error Retro Demo</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>System Error</title>
   <style>
+    :root {
+      --bg: #d9d9d9;
+      --window: #cfcfcf;
+      --border-dark: #555;
+      --border-light: #fff;
+      --title1: #0d2f97;
+      --title2: #2e90d8;
+      --text: #111;
+      --danger: #d00000;
+      --shadow: rgba(0,0,0,0.18);
+    }
+
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      touch-action: manipulation;
     }
 
     html, body {
       margin: 0;
-      padding: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
-      background: #d9d9d9;
-      touch-action: manipulation;
+      font-family: "Tahoma", "MS Sans Serif", Arial, sans-serif;
+      background: var(--bg);
     }
 
-    body {
-      position: relative;
+    body.fade-black {
+      animation: toBlack 2.2s forwards;
+    }
+
+    @keyframes toBlack {
+      0% { background: var(--bg); }
+      100% { background: #000; }
     }
 
     .screen {
       position: relative;
-      width: 100%;
-      height: 100%;
-      background: #d9d9d9;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
     }
 
-    .window {
+    .center-wrap {
       position: absolute;
-      background: #cfcfcf;
-      border: 2px solid #000;
-      box-shadow:
-        inset 1px 1px 0 #fff,
-        inset -1px -1px 0 #7b7b7b,
-        2px 2px 0 rgba(0,0,0,0.25);
-      user-select: none;
-    }
-
-    .title-bar {
-      height: 30px;
-      background: linear-gradient(90deg, #0b2f99, #1494d6);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 8px;
-      font-size: 14px;
-      font-weight: bold;
-      letter-spacing: 0.2px;
-    }
-
-    .close-btn {
-      width: 22px;
-      height: 22px;
-      background: #cfcfcf;
-      color: #000;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid #fff;
-      border-right-color: #555;
-      border-bottom-color: #555;
-      font-weight: bold;
+      padding: 16px;
+    }
+
+    .win98 {
+      width: min(92vw, 520px);
+      background: var(--window);
+      border-top: 2px solid var(--border-light);
+      border-left: 2px solid var(--border-light);
+      border-right: 2px solid var(--border-dark);
+      border-bottom: 2px solid var(--border-dark);
+      box-shadow: 0 10px 24px var(--shadow);
+    }
+
+    .titlebar {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 0 6px 0 8px;
+      background: linear-gradient(90deg, var(--title1), var(--title2));
+    }
+
+    .titlebar .close {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111;
+      background: #d7d7d7;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      border-right: 2px solid #444;
+      border-bottom: 2px solid #444;
       font-size: 14px;
       line-height: 1;
+      font-weight: 700;
     }
 
     .content {
-      padding: 18px 14px 14px;
-      color: #000;
-      font-size: 15px;
+      padding: 18px 16px 14px;
+      color: var(--text);
+      font-size: 16px;
     }
 
-    .error-layout {
+    .error-row {
       display: flex;
-      gap: 14px;
       align-items: flex-start;
+      gap: 14px;
     }
 
     .error-icon {
-      width: 46px;
-      height: 46px;
-      min-width: 46px;
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
       border-radius: 50%;
-      background: #ff1f1f;
+      background: #f00;
       position: relative;
       margin-top: 2px;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
     }
 
     .error-icon::before,
     .error-icon::after {
       content: "";
       position: absolute;
-      width: 24px;
-      height: 5px;
-      background: #fff;
-      top: 50%;
       left: 50%;
-      transform-origin: center;
+      top: 50%;
+      width: 24px;
+      height: 4px;
+      background: white;
       border-radius: 2px;
+      transform-origin: center;
     }
 
     .error-icon::before {
@@ -117,435 +144,593 @@
       transform: translate(-50%, -50%) rotate(-45deg);
     }
 
-    .msg {
-      line-height: 1.35;
-      word-break: break-word;
+    .error-text {
+      line-height: 1.45;
+      font-size: 17px;
+      margin-top: 1px;
+      white-space: pre-line;
     }
 
     .buttons {
-      margin-top: 20px;
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 22px;
+      margin-top: 22px;
       flex-wrap: wrap;
     }
 
-    button {
-      min-width: 92px;
-      padding: 8px 14px;
-      font-family: inherit;
-      font-size: 15px;
-      background: #d9d9d9;
-      border: 2px solid #fff;
-      border-right-color: #555;
-      border-bottom-color: #555;
-      color: #000;
+    .btn98 {
+      min-width: 110px;
+      height: 38px;
+      padding: 0 16px;
+      background: #d7d7d7;
+      color: #111;
+      font-size: 16px;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      border-right: 2px solid #444;
+      border-bottom: 2px solid #444;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
     }
 
-    button:active {
-      border: 2px solid #555;
-      border-right-color: #fff;
-      border-bottom-color: #fff;
+    .btn98:active {
+      border-top: 2px solid #444;
+      border-left: 2px solid #444;
+      border-right: 2px solid #fff;
+      border-bottom: 2px solid #fff;
     }
 
-    #mainError {
-      width: min(86vw, 460px);
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 5;
+    .floating-area {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: auto;
     }
 
-    .mini-window {
-      width: min(72vw, 250px);
-      z-index: 8;
+    .float-win {
+      position: absolute;
+      width: 180px;
+      background: var(--window);
+      border-top: 2px solid var(--border-light);
+      border-left: 2px solid var(--border-light);
+      border-right: 2px solid var(--border-dark);
+      border-bottom: 2px solid var(--border-dark);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      transform: translate(0, 0);
     }
 
-    .mini-window .content {
-      padding: 12px;
-      font-size: 13px;
+    .float-win .titlebar {
+      height: 24px;
+      font-size: 12px;
+      padding-left: 6px;
     }
 
-    .mini-window .buttons {
-      margin-top: 12px;
+    .float-win .titlebar .close {
+      width: 18px;
+      height: 18px;
+      font-size: 11px;
+    }
+
+    .float-win .content {
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .float-row {
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
 
-    .mini-window button {
-      min-width: 70px;
-      font-size: 13px;
-      padding: 6px 10px;
+    .float-win .error-icon {
+      width: 24px;
+      height: 24px;
+      flex-basis: 24px;
     }
 
-    #confirmOverlay,
-    #progressOverlay,
-    #finalOverlay {
+    .float-win .error-icon::before,
+    .float-win .error-icon::after {
+      width: 12px;
+      height: 2px;
+    }
+
+    .process-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.10);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      z-index: 50;
+    }
+
+    .process-overlay.show {
+      display: flex;
+    }
+
+    .process-box {
+      width: min(92vw, 520px);
+      background: var(--window);
+      border-top: 2px solid var(--border-light);
+      border-left: 2px solid var(--border-light);
+      border-right: 2px solid var(--border-dark);
+      border-bottom: 2px solid var(--border-dark);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    .process-box .content {
+      padding: 18px 16px 16px;
+    }
+
+    .process-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.45;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .task.active,
+    .task.done {
+      opacity: 1;
+    }
+
+    .task.active {
+      transform: translateX(3px);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #777;
+      flex: 0 0 10px;
+    }
+
+    .task.active .dot {
+      background: #1d7c1d;
+      animation: pulse 0.7s infinite;
+    }
+
+    .task.done .dot {
+      background: #1d7c1d;
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.55; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .progress-wrap {
+      margin-top: 12px;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 24px;
+      background: #f2f2f2;
+      border-top: 2px solid #444;
+      border-left: 2px solid #444;
+      border-right: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0a52cc, #40a9ff);
+      transition: width 0.2s linear;
+    }
+
+    .final-message {
       position: absolute;
       inset: 0;
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 20;
-    }
-
-    #confirmOverlay {
-      background: rgba(0,0,0,0.05);
-    }
-
-    #confirmBox {
-      width: min(88vw, 420px);
-      z-index: 21;
-    }
-
-    #progressOverlay {
-      background: #d9d9d9;
-      z-index: 25;
-      padding: 20px;
-    }
-
-    #progressBox {
-      width: min(90vw, 480px);
-    }
-
-    .status-list {
-      margin: 16px 0 18px;
-      padding-left: 18px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .progress-outer {
-      width: 100%;
-      height: 24px;
-      background: #bcbcbc;
-      border: 2px solid #666;
-      box-shadow: inset 1px 1px 0 #fff;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-inner {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #0b2f99, #1494d6);
-      transition: width 0.1s linear;
-    }
-
-    .progress-text {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: right;
-    }
-
-    #fadeBlack {
-      position: absolute;
-      inset: 0;
-      background: #000;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 40;
-      transition: opacity 3.5s linear;
-    }
-
-    #finalOverlay {
-      z-index: 50;
-      color: #fff;
       text-align: center;
-      padding: 28px;
-      background: transparent;
+      color: white;
+      z-index: 200;
+      padding: 24px;
+      background: rgba(0,0,0,0.94);
     }
 
-    #finalText {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: clamp(24px, 5.6vw, 44px);
-      line-height: 1.2;
+    .final-message.show {
+      display: flex;
+      animation: finalIn 0.7s ease forwards;
+    }
+
+    @keyframes finalIn {
+      from {
+        opacity: 0;
+        transform: scale(1.03);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .final-message .big {
+      font-size: clamp(26px, 8vw, 54px);
       font-weight: 800;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-      max-width: 900px;
+      line-height: 1.15;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
     }
 
-    .hidden {
-      display: none !important;
+    .shake {
+      animation: shake 0.18s linear 8;
     }
 
-    @media (max-width: 600px) {
-      .title-bar {
-        height: 28px;
-        font-size: 13px;
-      }
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-2px, 2px); }
+      50% { transform: translate(2px, -2px); }
+      75% { transform: translate(-2px, -1px); }
+      100% { transform: translate(0, 0); }
+    }
 
+    @media (max-width: 480px) {
       .content {
+        font-size: 15px;
+      }
+
+      .error-text {
+        font-size: 15px;
+      }
+
+      .btn98 {
+        min-width: 96px;
+        height: 36px;
+        font-size: 15px;
+      }
+
+      .process-title {
+        font-size: 17px;
+      }
+
+      .task-list {
         font-size: 14px;
-      }
-
-      .buttons {
-        gap: 10px;
-      }
-
-      button {
-        min-width: 80px;
-        padding: 8px 12px;
-        font-size: 14px;
-      }
-
-      .error-layout {
-        gap: 10px;
-      }
-
-      .error-icon {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
       }
     }
   </style>
 </head>
 <body>
   <div class="screen" id="screen">
-
-    <!-- Error principal -->
-    <div class="window" id="mainError">
-      <div class="title-bar">
-        <span>System Error</span>
-        <div class="close-btn">×</div>
-      </div>
-      <div class="content">
-        <div class="error-layout">
-          <div class="error-icon"></div>
-          <div class="msg">
-            <div>Runtime error.</div>
-            <div>Press Ok to Continue.</div>
-            <div>Press Cancel to Quit.</div>
-          </div>
-        </div>
-        <div class="buttons">
-          <button id="okMain">OK</button>
-          <button id="cancelMain">Cancel</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Confirmación -->
-    <div id="confirmOverlay">
-      <div class="window" id="confirmBox">
-        <div class="title-bar">
-          <span>Error del sistema</span>
-          <div class="close-btn">×</div>
+    <div class="center-wrap" id="initialWrap">
+      <div class="win98" id="initialError">
+        <div class="titlebar">
+          <span>System Error</span>
+          <div class="close">×</div>
         </div>
         <div class="content">
-          <div class="msg">
-            Error, ¿quiere resetear el dispositivo?
+          <div class="error-row">
+            <div class="error-icon"></div>
+            <div class="error-text">Runtime error.
+Press Ok to continue.
+Press Cancel to quit.</div>
           </div>
           <div class="buttons">
-            <button class="confirmChoice">Sí</button>
-            <button class="confirmChoice">No</button>
+            <div class="btn98" id="okBtn">OK</div>
+            <div class="btn98" id="cancelBtn">Cancel</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Progreso -->
-    <div id="progressOverlay">
-      <div class="window" id="progressBox">
-        <div class="title-bar">
-          <span>Proceso del sistema</span>
-          <div class="close-btn">×</div>
+    <div class="floating-area" id="floatingArea"></div>
+
+    <div class="process-overlay" id="processOverlay">
+      <div class="process-box">
+        <div class="titlebar">
+          <span>System Error</span>
+          <div class="close">×</div>
         </div>
         <div class="content">
-          <div class="msg"><strong>Perefcto resetenadoo</strong></div>
+          <div class="process-title">ERROR RESETEANDO EL EQUIPO</div>
 
-          <ul class="status-list">
-            <li>Limpiando el dispositivo</li>
-            <li>Borrando el sistema</li>
-            <li>Eliminando datos</li>
-            <li>Restableciendo de fábrica</li>
-          </ul>
-
-          <div class="progress-outer">
-            <div class="progress-inner" id="progressBar"></div>
+          <div class="task-list">
+            <div class="task" data-step="0"><span class="dot"></span><span>reseteando el equipo</span></div>
+            <div class="task" data-step="1"><span class="dot"></span><span>limpiando el equipo</span></div>
+            <div class="task" data-step="2"><span class="dot"></span><span>rastreando IP</span></div>
+            <div class="task" data-step="3"><span class="dot"></span><span>borrando recursos</span></div>
           </div>
-          <div class="progress-text" id="progressText">0%</div>
+
+          <div class="progress-wrap">
+            <div class="progress-label">Cargando proceso...</div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Capa negra progresiva -->
-    <div id="fadeBlack"></div>
-
-    <!-- Mensaje final -->
-    <div id="finalOverlay">
-      <div id="finalText">No cierre la pantalla o se perderá la información</div>
+    <div class="final-message" id="finalMessage">
+      <div class="big">NO CIERRE LA PANTALLA<br>O EXPLOTA EL MOVIL 🤣</div>
     </div>
   </div>
 
   <script>
+    const initialWrap = document.getElementById("initialWrap");
+    const floatingArea = document.getElementById("floatingArea");
+    const processOverlay = document.getElementById("processOverlay");
+    const progressFill = document.getElementById("progressFill");
+    const finalMessage = document.getElementById("finalMessage");
     const screen = document.getElementById("screen");
-    const mainError = document.getElementById("mainError");
-    const confirmOverlay = document.getElementById("confirmOverlay");
-    const progressOverlay = document.getElementById("progressOverlay");
-    const finalOverlay = document.getElementById("finalOverlay");
-    const fadeBlack = document.getElementById("fadeBlack");
-    const progressBar = document.getElementById("progressBar");
-    const progressText = document.getElementById("progressText");
+    const tasks = [...document.querySelectorAll(".task")];
 
-    let miniWindows = [];
-    let floatingInterval = null;
-    let animationFrameId = null;
+    const MAX_FLOATS = 14;
+    const floatWindows = [];
+    let prankStarted = false;
+    let floatingPhase = false;
 
-    const popupMessages = [
-      "Fatal exception detected.",
-      "Memory access violation.",
-      "Unknown device response.",
-      "Kernel warning.",
-      "Display driver failed.",
-      "Unexpected system condition.",
-      "Critical buffer overflow.",
-      "Process not responding."
-    ];
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
 
-    function randomBetween(min, max) {
+    function random(min, max) {
       return Math.random() * (max - min) + min;
     }
 
-    function createMiniWindow(index) {
-      const w = document.createElement("div");
-      w.className = "window mini-window";
+    function createFloatingWindow(index) {
+      const win = document.createElement("div");
+      win.className = "float-win";
 
-      const startX = randomBetween(10, window.innerWidth - Math.min(250, window.innerWidth * 0.72) - 10);
-      const startY = randomBetween(10, window.innerHeight - 150);
-
-      w.style.left = `${startX}px`;
-      w.style.top = `${startY}px`;
-
-      w.innerHTML = `
-        <div class="title-bar">
-          <span>Warning</span>
-          <div class="close-btn">×</div>
+      win.innerHTML = `
+        <div class="titlebar">
+          <span>System Error</span>
+          <div class="close">×</div>
         </div>
         <div class="content">
-          <div class="msg">${popupMessages[index % popupMessages.length]}</div>
-          <div class="buttons">
-            <button>OK</button>
+          <div class="float-row">
+            <div class="error-icon"></div>
+            <div>Runtime error</div>
           </div>
         </div>
       `;
 
-      screen.appendChild(w);
+      const rectW = Math.min(180, window.innerWidth * 0.45);
+      const rectH = 82;
+
+      let x = random(8, Math.max(10, window.innerWidth - rectW - 8));
+      let y = random(8, Math.max(10, window.innerHeight - rectH - 8));
+
+      win.style.width = rectW + "px";
+      win.style.left = x + "px";
+      win.style.top = y + "px";
 
       const obj = {
-        el: w,
-        x: startX,
-        y: startY,
-        vx: randomBetween(-1.8, 1.8) || 1.2,
-        vy: randomBetween(-1.5, 1.5) || -1.1,
-        w: Math.min(window.innerWidth * 0.72, 250),
-        h: 126
+        el: win,
+        x,
+        y,
+        w: rectW,
+        h: rectH,
+        vx: random(-1.4, 1.4) || 1,
+        vy: random(-1.4, 1.4) || -1
       };
 
-      miniWindows.push(obj);
-    }
+      floatingArea.appendChild(win);
+      floatWindows.push(obj);
 
-    function spawnMiniWindows() {
-      for (let i = 0; i < 7; i++) {
-        setTimeout(() => createMiniWindow(i), i * 350);
-      }
-    }
-
-    function animateMiniWindows() {
-      const maxX = window.innerWidth;
-      const maxY = window.innerHeight;
-
-      miniWindows.forEach(item => {
-        item.x += item.vx;
-        item.y += item.vy;
-
-        if (item.x <= 0 || item.x + item.w >= maxX) item.vx *= -1;
-        if (item.y <= 0 || item.y + item.h >= maxY) item.vy *= -1;
-
-        item.el.style.left = `${item.x}px`;
-        item.el.style.top = `${item.y}px`;
+      win.addEventListener("click", (e) => {
+        e.stopPropagation();
+        evadeFromPoint(e.touches?.[0]?.clientX || e.clientX, e.touches?.[0]?.clientY || e.clientY, 160);
       });
 
-      animationFrameId = requestAnimationFrame(animateMiniWindows);
+      win.addEventListener("touchstart", (e) => {
+        const t = e.touches[0];
+        if (!t) return;
+        evadeFromPoint(t.clientX, t.clientY, 180);
+      }, { passive: true });
     }
 
-    function removeMiniWindows() {
-      miniWindows.forEach(w => w.el.remove());
-      miniWindows = [];
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      if (floatingInterval) clearInterval(floatingInterval);
-    }
+    function animateFloaters() {
+      if (!floatingPhase) return;
 
-    function showConfirm() {
-      confirmOverlay.style.display = "flex";
-    }
+      const W = window.innerWidth;
+      const H = window.innerHeight;
 
-    function startProgress() {
-      confirmOverlay.style.display = "none";
-      progressOverlay.style.display = "flex";
+      for (const obj of floatWindows) {
+        obj.x += obj.vx;
+        obj.y += obj.vy;
 
-      const duration = 7000;
-      const start = performance.now();
+        if (obj.x <= 0 || obj.x + obj.w >= W) obj.vx *= -1;
+        if (obj.y <= 0 || obj.y + obj.h >= H) obj.vy *= -1;
 
-      function update(now) {
-        const elapsed = now - start;
-        const ratio = Math.min(elapsed / duration, 1);
-        const percent = Math.round(ratio * 100);
+        obj.x = clamp(obj.x, 0, W - obj.w);
+        obj.y = clamp(obj.y, 0, H - obj.h);
 
-        progressBar.style.width = percent + "%";
-        progressText.textContent = percent + "%";
-
-        if (ratio < 1) {
-          requestAnimationFrame(update);
-        } else {
-          startFadeToBlack();
-        }
+        obj.el.style.left = obj.x + "px";
+        obj.el.style.top = obj.y + "px";
       }
 
-      requestAnimationFrame(update);
+      requestAnimationFrame(animateFloaters);
     }
 
-    function startFadeToBlack() {
-      fadeBlack.style.opacity = "1";
+    function evadeFromPoint(px, py, extraForce = 140) {
+      for (const obj of floatWindows) {
+        const cx = obj.x + obj.w / 2;
+        const cy = obj.y + obj.h / 2;
 
-      setTimeout(() => {
-        finalOverlay.style.display = "flex";
-      }, 2600);
+        const dx = cx - px;
+        const dy = cy - py;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < 180) {
+          const force = (180 - dist) / 180;
+          const nx = dx / (dist || 1);
+          const ny = dy / (dist || 1);
+
+          obj.vx += nx * force * 4;
+          obj.vy += ny * force * 4;
+
+          const speedLimit = 7;
+          obj.vx = clamp(obj.vx, -speedLimit, speedLimit);
+          obj.vy = clamp(obj.vy, -speedLimit, speedLimit);
+
+          obj.x += nx * force * (extraForce * 0.05);
+          obj.y += ny * force * (extraForce * 0.05);
+        }
+      }
     }
 
-    // Flujo principal:
-    // 1) error principal 7 segundos
-    // 2) avisos flotantes 10 segundos
-    // 3) confirmación
-    // 4) progreso 7 segundos
-    // 5) fundido a negro + texto final
+    function startFloatingPhase() {
+      floatingPhase = true;
+      initialWrap.style.display = "none";
 
-    setTimeout(() => {
-      mainError.classList.add("hidden");
-      spawnMiniWindows();
-      animateMiniWindows();
+      for (let i = 0; i < MAX_FLOATS; i++) {
+        setTimeout(() => createFloatingWindow(i), i * 120);
+      }
 
       setTimeout(() => {
-        removeMiniWindows();
-        showConfirm();
-      }, 10000);
-    }, 7000);
+        animateFloaters();
+      }, 200);
 
-    // Los botones del error principal no cambian el flujo
-    document.getElementById("okMain").addEventListener("click", () => {});
-    document.getElementById("cancelMain").addEventListener("click", () => {});
+      setTimeout(() => {
+        showProcessPhase();
+      }, 7000);
+    }
 
-    document.querySelectorAll(".confirmChoice").forEach(btn => {
-      btn.addEventListener("click", startProgress);
+    function setActiveTask(index) {
+      tasks.forEach((task, i) => {
+        task.classList.remove("active");
+        if (i < index) task.classList.add("done");
+        if (i >= index) task.classList.remove("done");
+      });
+
+      if (tasks[index]) {
+        tasks[index].classList.add("active");
+      }
+    }
+
+    function showProcessPhase() {
+      floatingPhase = false;
+
+      floatWindows.forEach(w => w.el.remove());
+      floatWindows.length = 0;
+
+      processOverlay.classList.add("show");
+      screen.classList.add("shake");
+
+      setTimeout(() => {
+        screen.classList.remove("shake");
+      }, 1600);
+
+      let progress = 0;
+      let currentStep = 0;
+
+      setActiveTask(0);
+
+      const interval = setInterval(() => {
+        progress += random(1.5, 4.5);
+        if (progress > 100) progress = 100;
+
+        progressFill.style.width = progress + "%";
+
+        if (progress >= 25 && currentStep < 1) {
+          currentStep = 1;
+          setActiveTask(1);
+        }
+        if (progress >= 50 && currentStep < 2) {
+          currentStep = 2;
+          setActiveTask(2);
+        }
+        if (progress >= 75 && currentStep < 3) {
+          currentStep = 3;
+          setActiveTask(3);
+        }
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          tasks.forEach(t => {
+            t.classList.remove("active");
+            t.classList.add("done");
+          });
+
+          setTimeout(() => {
+            document.body.classList.add("fade-black");
+          }, 400);
+
+          setTimeout(() => {
+            processOverlay.style.display = "none";
+            finalMessage.classList.add("show");
+          }, 2400);
+        }
+      }, 140);
+    }
+
+    function startPrank() {
+      if (prankStarted) return;
+      prankStarted = true;
+
+      setTimeout(() => {
+        startFloatingPhase();
+      }, 6000);
+    }
+
+    document.getElementById("okBtn").addEventListener("click", startPrank);
+    document.getElementById("cancelBtn").addEventListener("click", startPrank);
+
+    document.body.addEventListener("touchstart", (e) => {
+      if (!floatingPhase) return;
+      const t = e.touches[0];
+      if (!t) return;
+      evadeFromPoint(t.clientX, t.clientY, 220);
+    }, { passive: true });
+
+    document.body.addEventListener("touchmove", (e) => {
+      if (!floatingPhase) return;
+      const t = e.touches[0];
+      if (!t) return;
+      evadeFromPoint(t.clientX, t.clientY, 260);
+    }, { passive: true });
+
+    document.body.addEventListener("mousemove", (e) => {
+      if (!floatingPhase) return;
+      evadeFromPoint(e.clientX, e.clientY, 120);
     });
 
+    // Arranca automáticamente aunque no toquen nada
+    startPrank();
+
     window.addEventListener("resize", () => {
-      // Ajuste sencillo para mantener elementos dentro de pantalla
-      miniWindows.forEach(item => {
-        item.x = Math.min(item.x, window.innerWidth - item.w - 8);
-        item.y = Math.min(item.y, window.innerHeight - item.h - 8);
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+
+      floatWindows.forEach(obj => {
+        obj.w = Math.min(180, W * 0.45);
+        obj.el.style.width = obj.w + "px";
+        obj.x = clamp(obj.x, 0, W - obj.w);
+        obj.y = clamp(obj.y, 0, H - obj.h);
+        obj.el.style.left = obj.x + "px";
+        obj.el.style.top = obj.y + "px";
       });
     });
   </script>
