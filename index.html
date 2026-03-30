@@ -1,1 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theme Page Empire</title>
+  <meta name="description" content="Build your theme page. Make it print money. Complete system to grow, monetize, and automate your Instagram theme page." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#060606;
+      --bg-2:#0b0b0b;
+      --panel:#111111;
+      --panel-2:#0d0d0d;
+      --line:rgba(255,255,255,.08);
+      --text:#f6f2e8;
+      --muted:#c3bcab;
+      --lime:#f5d547;
+      --lime-2:#ffe98a;
+      --dark:#0b0b0b;
+      --white:#ffffff;
+      --radius:28px;
+      --radius-sm:18px;
+      --max:1240px;
+      --shadow:0 18px 60px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(245,213,71,.09), transparent 22%),
+        radial-gradient(circle at 88% 0%, rgba(245,213,71,.06), transparent 18%),
+        linear-gradient(180deg, #070707 0%, #090909 50%, #050505 100%);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    .container{width:min(calc(100% - 28px),var(--max));margin:0 auto}
+    .section{padding:96px 0}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      border:1px solid rgba(164,213,74,.28);
+      background:rgba(164,213,74,.07);
+      color:var(--lime-2);
+      padding:10px 14px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    }
+    .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lime)}
+    .kicker{color:var(--muted);font-size:15px}
+    .button{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-height:54px;padding:0 24px;border-radius:999px;border:1px solid transparent;
+      font-weight:800;letter-spacing:-.02em;transition:transform .18s ease, background .18s ease, border-color .18s ease;cursor:pointer;
+    }
+    .button:hover{transform:translateY(-1px)}
+    .button-primary{background:var(--lime);color:#111;box-shadow:0 10px 30px rgba(164,213,74,.22)}
+    .button-secondary{background:transparent;border-color:rgba(255,255,255,.16);color:var(--white)}
+    .button-full{width:100%}
 
+    .top-banner{
+      display:flex;justify-content:center;align-items:center;padding:10px 14px;background:var(--lime);color:#111;
+      font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    }
+
+    .navbar-wrap{position:sticky;top:0;z-index:1000;background:rgba(8,8,8,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .navbar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:82px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:900;letter-spacing:-.05em}
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;background:linear-gradient(180deg, rgba(164,213,74,.24), rgba(164,213,74,.08));
+      border:1px solid rgba(164,213,74,.22);display:grid;place-items:center;color:var(--lime);font-size:13px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .brand-text{font-size:17px}
+    .nav-links{display:flex;align-items:center;gap:26px}
+    .nav-links a{font-size:14px;font-weight:600;color:#e8ecd7}
+    .nav-cta{display:flex;align-items:center;gap:12px}
+    .menu-toggle{display:none;background:none;border:none;color:#fff;font-size:28px;cursor:pointer}
+    .mobile-nav{display:none;padding-bottom:16px}
+    .mobile-nav .stack{display:grid;gap:12px}
+    
+    .hero{padding:56px 0 40px;position:relative;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:24px;align-items:stretch}
+    .hero-copy,
+    .hero-visual,
+    .panel,
+    .glass{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+      box-shadow:var(--shadow);
+      border-radius:32px;
+    }
+    .hero-copy{padding:36px 36px 34px;position:relative;overflow:hidden}
+    .hero-copy::after{
+      content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;
+      background:radial-gradient(circle, rgba(164,213,74,.18), transparent 70%);pointer-events:none;
+    }
+    h1,h2,h3,h4{margin:0;letter-spacing:-.05em;line-height:.98}
+    h1{font-size:clamp(42px,6vw,82px);max-width:760px;margin-top:18px}
+    h2{font-size:clamp(34px,4vw,58px)}
+    h3{font-size:clamp(24px,2vw,34px)}
+    .hero-copy .lead{max-width:640px;margin:20px 0 0;color:#d7dec8;font-size:18px;line-height:1.6}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+    .proof-inline{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
+    .avatar-stack{display:flex;align-items:center}
+    .avatar{
+      width:38px;height:38px;border-radius:50%;margin-left:-10px;border:2px solid #1b2806;
+      background:linear-gradient(180deg, rgba(164,213,74,.18), rgba(255,255,255,.04));
+      display:grid;place-items:center;font-size:11px;font-weight:900;color:var(--lime-2)
+    }
+    .avatar:first-child{margin-left:0}
+    .proof-inline span{font-size:14px;color:#d5dcc7}
+
+    .hero-visual{padding:18px;display:grid;grid-template-rows:auto 1fr auto;gap:16px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(20,31,4,.8))}
+    .visual-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 6px 0}
+    .tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--dark);background:var(--lime);padding:9px 12px;border-radius:999px}
+    .mini-stat{font-size:13px;color:#d2d9c5}
+    .screen{
+      min-height:450px;border-radius:26px;padding:20px;
+      background:linear-gradient(180deg, #f6f6f0 0%, #eef1e5 100%);
+      color:#182603;display:grid;grid-template-rows:auto auto 1fr auto;gap:18px;position:relative;overflow:hidden;
+    }
+    .screen::after{
+      content:"";position:absolute;right:-40px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:rgba(164,213,74,.18)
+    }
+    .screen-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .dots{display:flex;gap:7px}.dots span{width:8px;height:8px;border-radius:50%;background:#182603;opacity:.18}
+    .screen-label{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#4e5f36}
+    .screen-card{border:1px solid rgba(24,38,3,.08);background:#fff;border-radius:22px;padding:18px;box-shadow:0 10px 26px rgba(0,0,0,.06)}
+    .screen-cover{
+      aspect-ratio:16/10;border-radius:18px;background:
+        radial-gradient(circle at 18% 22%, rgba(164,213,74,.55), transparent 26%),
+        linear-gradient(135deg, #213406 0%, #405f11 42%, #a4d54a 100%);
+      display:flex;align-items:flex-end;justify-content:space-between;padding:18px;color:#fff;position:relative;overflow:hidden;
+    }
+    .screen-cover::before{content:"Suggested hero image";position:absolute;top:16px;right:16px;font-size:11px;font-weight:700;background:rgba(255,255,255,.12);padding:7px 10px;border-radius:999px}
+    .screen-list{display:grid;gap:10px;margin-top:14px}
+    .screen-row{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#233507}
+    .screen-row i{font-style:normal;color:#5f8b17;font-weight:900}
+    .screen-bottom{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:end}
+    .metric-box{background:#182603;color:#eff4e5;border-radius:20px;padding:18px}
+    .metric-box .metric{font-size:32px;font-weight:900;color:var(--lime)}
+    .photo-note{border:1px dashed rgba(24,38,3,.14);border-radius:18px;padding:16px;background:rgba(164,213,74,.09);color:#314416;font-size:13px}
+
+    .metrics-strip{padding:22px 0 0}
+    .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .metric-tile{padding:22px;border-radius:24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .metric-tile .n{font-size:34px;font-weight:900;color:var(--lime)}
+    .metric-tile .t{margin-top:8px;color:#d7dec8;font-size:14px}
+
+    .section-head{max-width:760px;margin:0 auto 48px;text-align:center}
+    .section-head p{margin:16px auto 0;color:var(--muted);font-size:17px;line-height:1.6}
+
+    .value-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+    .value-card{padding:28px}
+    .value-card h3{margin-top:14px}
+    .bullets{display:grid;gap:12px;margin-top:18px}
+    .bullet{display:flex;gap:12px;align-items:flex-start;color:#eef3e3}
+    .bullet .icon{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(164,213,74,.14);color:var(--lime);font-size:13px;flex:0 0 auto}
+    .photo-grid{display:grid;gap:16px}
+    .mock-photo{padding:18px;min-height:180px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg, rgba(164,213,74,.14), rgba(255,255,255,.03));display:flex;flex-direction:column;justify-content:space-between}
+    .mock-photo.big{min-height:250px;background:linear-gradient(135deg, rgba(164,213,74,.18), rgba(255,255,255,.03) 55%, rgba(255,255,255,.02));}
+    .mock-photo .small{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#d6dfc1}
+    .mock-photo h4{font-size:22px;max-width:320px}
+    .mock-photo p{margin:8px 0 0;color:#d1d8c3;font-size:14px;max-width:360px}
+
+    .products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+    .product-card{padding:26px;display:flex;flex-direction:column;min-height:100%}
+    .product-card.featured{grid-column:1 / -1;background:linear-gradient(180deg, rgba(164,213,74,.09), rgba(255,255,255,.018));}
+    .card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .pill-price{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+    .pill-price.primary{background:var(--lime);border-color:var(--lime);color:var(--dark)}
+    .sold{font-size:12px;color:var(--muted);font-weight:700}
+    .product-card p{margin:14px 0 0;color:#ced6bf}
+    .product-features{display:grid;gap:10px;margin-top:18px}
+    .product-features div{display:flex;gap:10px;align-items:flex-start;color:#f2f5ec}
+    .product-features i{font-style:normal;color:var(--lime);font-weight:900}
+    .product-footer{margin-top:auto;padding-top:22px}
+    .pricing-line{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-top:14px}
+    .price-big{font-size:42px;font-weight:900;color:var(--lime)}
+    .price-old{font-size:22px;color:#8d977a;text-decoration:line-through}
+    .discount{display:inline-flex;padding:7px 11px;border-radius:999px;background:rgba(164,213,74,.12);color:var(--lime);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .best-tag{display:inline-flex;gap:8px;align-items:center;background:var(--lime);color:#111;padding:8px 12px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+
+    .calculator-grid{display:grid;grid-template-columns:1fr .9fr;gap:22px;align-items:stretch}
+    .calc-card,.result-card{padding:28px}
+    .slider-group{margin-top:18px}
+    .slider-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:12px;font-size:14px;color:#f3f5ed}
+    .slider-head strong{color:var(--lime);font-size:20px}
+    input[type="range"]{width:100%;accent-color:var(--lime);cursor:pointer}
+    .ticks{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font-size:11px;color:#9ea88a}
+    .result-card{display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(180deg, rgba(164,213,74,.08), rgba(255,255,255,.02))}
+    .result-label{font-size:14px;color:var(--muted)}
+    .result-value{font-size:clamp(42px,5vw,72px);font-weight:900;color:var(--lime);line-height:1;margin-top:10px}
+    .result-notes{display:grid;gap:10px;margin-top:22px}
+    .result-notes div{display:flex;gap:10px;align-items:flex-start;color:#eef3e2}
+
+    .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .step-card{padding:26px;position:relative;overflow:hidden}
+    .step-num{width:48px;height:48px;border-radius:14px;background:var(--lime);display:grid;place-items:center;color:var(--dark);font-weight:900;font-size:18px}
+    .step-card p{margin:14px 0 0;color:#ced6bf}
+
+    .testimonials-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:22px}
+    .testimonial-main{padding:32px;background:linear-gradient(180deg, rgba(164,213,74,.09), rgba(255,255,255,.018))}
+    .stars{font-size:18px;letter-spacing:2px;color:var(--lime)}
+    .quote{font-size:24px;line-height:1.45;margin-top:16px;color:#f6f8f1}
+    .person{display:flex;align-items:center;gap:12px;margin-top:20px}
+    .person-badge{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(164,213,74,.16);color:var(--lime);font-weight:900}
+    .mini-quotes{display:grid;gap:16px}
+    .mini-quote{padding:24px}
+    .mini-quote p{margin:12px 0 0;color:#d5dcc7}
+
+    .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .price-card{padding:26px;display:flex;flex-direction:column}
+    .price-card.highlight{background:linear-gradient(180deg, rgba(164,213,74,.12), rgba(255,255,255,.018));border-color:rgba(164,213,74,.22)}
+    .price-card .small{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:var(--lime)}
+    .amount{font-size:48px;font-weight:900;letter-spacing:-.05em;margin-top:12px}
+    .amount span{font-size:18px;color:#919b7e;text-decoration:line-through;margin-left:8px}
+
+    .visual-ideas{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .idea{padding:22px}
+    .idea p{margin:10px 0 0;color:#cfd7c1}
+
+    .faq{max-width:920px;margin:0 auto;display:grid;gap:14px}
+    .faq-item{padding:0 22px}
+    .faq-q{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:22px 0;cursor:pointer;font-weight:800}
+    .faq-a{max-height:0;overflow:hidden;color:#cad3bb;transition:max-height .22s ease,padding .22s ease;padding:0}
+    .faq-item.active .faq-a{max-height:220px;padding:0 0 20px}
+    .faq-icon{font-size:24px;color:var(--lime)}
+
+    .cta-final{padding-top:20px}
+    .cta-wrap{padding:34px;position:relative;overflow:hidden;text-align:center}
+    .cta-wrap::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:420px;height:420px;border-radius:50%;background:radial-gradient(circle, rgba(164,213,74,.14), transparent 66%);pointer-events:none}
+    .cta-wrap > *{position:relative;z-index:1}
+    .cta-wrap p{max-width:680px;margin:18px auto 0;color:#d1d9c2;font-size:18px}
+
+    .footer{padding:30px 0 46px;border-top:1px solid rgba(255,255,255,.06)}
+    .footer-top{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+    .footer-links{display:flex;gap:22px;flex-wrap:wrap;color:#bfc8ad;font-size:14px}
+    .footer-note{margin-top:18px;text-align:center;font-size:12px;color:#8d977a;max-width:860px;margin-left:auto;margin-right:auto;line-height:1.7}
+    .sticky-mobile{display:none;position:fixed;left:16px;right:16px;bottom:16px;z-index:999}
+
+    
+
+    /* --- V4 hero redesign --- */
+    .hero{padding:46px 0 34px;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;background:
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size:32px 32px;mask-image:linear-gradient(180deg, rgba(0,0,0,.75), transparent 92%);opacity:.38;pointer-events:none}
+    .hero::after{content:"";position:absolute;left:50%;top:14%;transform:translateX(-50%);width:680px;height:680px;border-radius:50%;background:radial-gradient(circle, rgba(245,213,71,.12), transparent 62%);filter:blur(14px);pointer-events:none}
+    .hero-grid{grid-template-columns:1fr;gap:22px}
+    .hero-copy{padding:28px 28px 24px;background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));}
+    .hero-copy::after{display:none}
+    .hero-shell{position:relative;border:1px solid rgba(245,213,71,.18);background:linear-gradient(180deg, rgba(17,17,17,.9), rgba(10,10,10,.96));border-radius:34px;box-shadow:0 30px 100px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden}
+    .hero-shell::before{content:"";position:absolute;inset:12px;border:1px solid rgba(255,255,255,.05);border-radius:28px;pointer-events:none}
+    .hero-topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+    .hero-topbar .window-dots{display:flex;gap:7px}.hero-topbar .window-dots span{width:9px;height:9px;border-radius:50%;background:rgba(245,213,71,.9)}
+    .hero-topbar .mini-badge{padding:8px 12px;border-radius:999px;background:rgba(245,213,71,.12);border:1px solid rgba(245,213,71,.22);color:var(--lime);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .hero-main{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;padding:18px}
+    .hero-left-panel{padding:24px;min-height:520px;position:relative;background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:28px;overflow:hidden}
+    .hero-left-panel::before{content:"";position:absolute;inset:0;background:
+      linear-gradient(rgba(245,213,71,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,213,71,.08) 1px, transparent 1px);
+      background-size:28px 28px;opacity:.3;pointer-events:none}
+    .hero-left-inner{position:relative;z-index:1;max-width:620px}
+    .hero-kicker{display:inline-flex;align-items:center;gap:10px;padding:9px 14px;border-radius:14px;background:rgba(245,213,71,.12);border:1px solid rgba(245,213,71,.24);color:var(--lime-2);font-weight:800;font-size:13px}
+    .hero-kicker::before{content:"✦";color:var(--lime)}
+    .hero-copy h1{max-width:700px}
+    .hero-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+    .hero-tab{appearance:none;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);color:#f4eedf;padding:12px 15px;border-radius:14px;font-weight:700;cursor:pointer;transition:.2s ease}
+    .hero-tab:hover,.hero-tab.active{background:var(--lime);border-color:var(--lime);color:#111;transform:translateY(-1px)}
+    .hero-cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+    .hero-proofline{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:22px;padding-top:22px;border-top:1px solid rgba(255,255,255,.06)}
+    .hero-proofline .proof-pill{padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:13px;color:#ddd4c0}
+    .hero-right-panel{display:grid;gap:14px}
+    .interactive-stage{position:relative;padding:18px;border-radius:28px;background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);overflow:hidden;min-height:520px}
+    .interactive-stage::before{content:"";position:absolute;inset:0;background:
+      radial-gradient(circle at 20% 22%, rgba(245,213,71,.16), transparent 22%),
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:auto, 30px 30px, 30px 30px;opacity:.7;pointer-events:none}
+    .interactive-card{position:relative;z-index:1;padding:18px;border-radius:22px;border:1px solid rgba(245,213,71,.16);background:rgba(10,10,10,.72);backdrop-filter:blur(10px);transition:transform .28s ease,border-color .28s ease, background .28s ease}
+    .interactive-card:hover{transform:translateY(-4px) scale(1.01);border-color:rgba(245,213,71,.35);background:rgba(15,15,15,.9)}
+    .preview-screen{padding:22px;border-radius:24px;background:linear-gradient(135deg, rgba(20,20,20,.96), rgba(37,37,37,.92));border:1px solid rgba(245,213,71,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+    .preview-screen .preview-label{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(245,213,71,.12);color:var(--lime);font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+    .preview-title{font-size:34px;font-weight:900;line-height:1.02;letter-spacing:-.05em;margin-top:18px;max-width:360px}
+    .preview-sub{margin-top:12px;color:#d0c6af;max-width:360px}
+    .preview-stack{display:grid;gap:10px;margin-top:22px}
+    .preview-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);cursor:pointer;transition:.22s ease}
+    .preview-item:hover,.preview-item.active{background:rgba(245,213,71,.12);border-color:rgba(245,213,71,.24);color:#fff}
+    .preview-item strong{font-size:14px}
+    .preview-item span{font-size:12px;color:#cbbf9f}
+    .floating-note{position:absolute;right:18px;bottom:18px;z-index:1;max-width:220px;padding:14px 16px;border-radius:18px;background:rgba(245,213,71,.92);color:#111;font-size:13px;font-weight:700;box-shadow:0 20px 40px rgba(0,0,0,.25);animation:floatY 5s ease-in-out infinite}
+    .hero-interactions{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .micro-card{padding:18px;border-radius:20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden;cursor:pointer;transition:.22s ease}
+    .micro-card:hover{transform:translateY(-3px);border-color:rgba(245,213,71,.3)}
+    .micro-card::after{content:"";position:absolute;right:-30px;bottom:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle, rgba(245,213,71,.18), transparent 60%)}
+    .micro-card .small-label{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--lime)}
+    .micro-card h4{font-size:20px;margin-top:10px}
+    .micro-card p{margin:8px 0 0;color:#cdc3ad;font-size:13px;max-width:250px}
+    .metrics-strip{padding:10px 0 0}
+    .metrics-grid{grid-template-columns:repeat(4,1fr)}
+    .metric-tile{background:rgba(255,255,255,.025)}
+    @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(245,213,71,.12)}70%{box-shadow:0 0 0 18px rgba(245,213,71,0)}100%{box-shadow:0 0 0 0 rgba(245,213,71,0)}}
+    .button-primary{animation:pulseRing 4s infinite}
+    @media (max-width:1100px){.hero-main{grid-template-columns:1fr}.interactive-stage,.hero-left-panel{min-height:auto}}
+    @media (max-width:820px){.hero-main,.hero-interactions,.metrics-grid{grid-template-columns:1fr}.preview-title{font-size:28px}.hero-left-panel{padding:22px}.hero-copy{padding:22px}}
+
+    @media (max-width: 1100px){
+      .hero-grid,.value-grid,.calculator-grid,.testimonials-grid{grid-template-columns:1fr}
+      .metrics-grid,.pricing-grid{grid-template-columns:repeat(2,1fr)}
+      .visual-ideas{grid-template-columns:1fr}
+    }
+    @media (max-width: 820px){
+      .section{padding:76px 0}
+      .navbar{min-height:72px}
+      .nav-links,.nav-cta .button-secondary{display:none}
+      .menu-toggle{display:block}
+      .mobile-nav.show{display:block}
+      .hero-copy,.hero-visual,.value-card,.calc-card,.result-card,.testimonial-main,.mini-quote,.product-card,.price-card,.idea,.step-card,.metric-tile{border-radius:24px}
+      .hero-copy{padding:28px 24px}
+      .screen{min-height:auto}
+      .screen-bottom,.products-grid,.pricing-grid,.metrics-grid,.steps-grid{grid-template-columns:1fr}
+      .product-card.featured{grid-column:auto}
+      .visual-ideas{grid-template-columns:1fr}
+      .hero-actions .button{width:100%}
+      .sticky-mobile{display:block}
+      body{padding-bottom:86px}
+      .quote{font-size:20px}
+    }
+  </style>
+
+  <style id="v5-theme-overrides">
+    :root{
+      --bg:#000000;
+      --bg-2:#000000;
+      --panel:#050505;
+      --panel-2:#0a0a0a;
+      --line:rgba(255,255,255,.10);
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.72);
+      --lime:#ffe821;
+      --lime-2:#ffe821;
+      --dark:#000000;
+      --white:#ffffff;
+      --shadow:0 18px 60px rgba(0,0,0,.42);
+    }
+    body{
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,232,33,.10), transparent 20%),
+        radial-gradient(circle at 82% 0%, rgba(255,232,33,.06), transparent 18%),
+        linear-gradient(180deg, #000 0%, #050505 45%, #000 100%);
+      color:#fff;
+    }
+    .top-banner{background:var(--lime);color:#000;}
+    .eyebrow,.hero-kicker,.hero-topbar .mini-badge,.preview-screen .preview-label,.tag,.discount,.best-tag,.pill-price.primary{background:rgba(255,232,33,.12);border-color:rgba(255,232,33,.28);color:var(--lime);}
+    .eyebrow::before{background:var(--lime);}
+    .tag,.best-tag,.pill-price.primary,.hero-tab:hover,.hero-tab.active,.button-primary{background:var(--lime)!important;color:#000!important;border-color:var(--lime)!important;}
+    .brand-mark,.step-num{background:rgba(255,232,33,.12);border-color:rgba(255,232,33,.24);color:var(--lime);}
+    .step-num{background:var(--lime);color:#000;}
+    .hero-shell,.hero-copy,.hero-left-panel,.interactive-stage,.panel,.glass,.metric-tile,.price-card,.product-card,.calc-card,.result-card,.testimonial-main,.mini-quote,.idea,.step-card,.value-card,.mock-photo{
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+      border-color:rgba(255,255,255,.10);
+      color:#fff;
+    }
+    .hero::before,.hero-left-panel::before,.interactive-stage::before{opacity:.28;}
+    .hero::after{background:radial-gradient(circle, rgba(255,232,33,.14), transparent 62%);}
+    .hero-left-panel::before{
+      background:linear-gradient(rgba(255,232,33,.08) 1px, transparent 1px),linear-gradient(90deg, rgba(255,232,33,.08) 1px, transparent 1px);
+      background-size:28px 28px;
+    }
+    .interactive-stage::before{
+      background:radial-gradient(circle at 20% 22%, rgba(255,232,33,.14), transparent 22%),linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:auto, 30px 30px, 30px 30px;
+    }
+    .screen,.preview-screen{background:linear-gradient(135deg, rgba(0,0,0,.96), rgba(18,18,18,.96));color:#fff;}
+    .screen-card,.preview-item,.micro-card,.proof-pill,.floating-note,.photo-note,.mock-photo{
+      background:rgba(255,255,255,.03);
+      border-color:rgba(255,255,255,.10);
+      color:#fff;
+    }
+    .screen-row,.screen-label,.product-card p,.section-head p,.value-card .bullet div,.mini-quote p,.quote,.preview-sub,.hero-copy .lead,.proof-inline span,.hero-proofline .proof-pill,.mock-photo p,.result-label,.ticks,.kicker,.sold,.metric-tile .t,.footer-links,.footer-note,.faq-a,.slider-head,.screen-row span,.preview-item span,.micro-card p,.photo-note,.price-old{color:rgba(255,255,255,.74)!important;}
+    .price-big,.metric-tile .n,.amount,.result-value,.preview-title,.stars,.hero-kicker::before,.preview-screen .preview-label,.floating-note strong,.bullet .icon,.product-features i,.result-notes i,.faq-icon{color:var(--lime)!important;}
+    .floating-note{background:var(--lime);color:#000;border:1px solid rgba(255,232,33,.34);}
+    .button-secondary,.hero-tab,.preview-item,.micro-card,.faq-item,.pill-price{border-color:rgba(255,255,255,.10);color:#fff;}
+    .preview-item:hover,.preview-item.active,.micro-card:hover{background:rgba(255,232,33,.10);border-color:rgba(255,232,33,.25);}
+    .screen-cover{background:linear-gradient(135deg, #000 0%, #141414 52%, #ffe821 100%);}
+    .screen-cover::before{background:rgba(255,255,255,.10);color:#fff;}
+    .metric-box{background:#000;color:#fff;border:1px solid rgba(255,255,255,.08);}
+    .metric-box .metric{color:var(--lime);}
+    .window-dots span{background:var(--lime)!important;}
+    .navbar-wrap{background:rgba(0,0,0,.88);border-bottom-color:rgba(255,255,255,.08);}
+    .nav-links a,.brand,.brand-text,.hero-tab,.faq-q,.product-features div,.slider-head span,.slider-head strong,.mini-stat,.person,.mini-quote,.preview-item strong,.micro-card h4,.section h3,.section h4{color:#fff;}
+    .button-primary{box-shadow:0 10px 30px rgba(255,232,33,.18);animation:pulseRingBW 4s infinite;}
+    @keyframes pulseRingBW{0%{box-shadow:0 0 0 0 rgba(255,232,33,.12)}70%{box-shadow:0 0 0 18px rgba(255,232,33,0)}100%{box-shadow:0 0 0 0 rgba(255,232,33,0)}}
+
+    /* mobile-first refinements */
+    @media (max-width: 820px){
+      .container{width:min(calc(100% - 20px),var(--max));}
+      .hero{padding:20px 0 24px;}
+      .hero-shell{border-radius:24px;}
+      .hero-topbar{padding:12px 14px;}
+      .hero-main{padding:12px;gap:12px;}
+      .hero-left-panel,.interactive-stage{border-radius:20px;}
+      .hero-left-panel{padding:18px;min-height:auto;}
+      .hero-copy{padding:0;}
+      .hero-copy h1{font-size:clamp(34px,12vw,52px);line-height:1.02;}
+      .hero-copy .lead{font-size:16px;margin-top:14px;}
+      .hero-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+      .hero-tab{padding:12px 10px;font-size:13px;text-align:center;}
+      .hero-cta-row{display:grid;grid-template-columns:1fr;gap:10px;margin-top:20px;}
+      .hero-proofline{gap:10px;padding-top:16px;margin-top:16px;align-items:flex-start;}
+      .hero-proofline .proof-pill{width:100%;text-align:center;}
+      .interactive-stage{padding:12px;min-height:auto;}
+      .preview-screen{padding:16px;border-radius:18px;}
+      .preview-title{font-size:26px;max-width:none;}
+      .preview-sub{font-size:14px;max-width:none;}
+      .preview-stack{gap:8px;margin-top:16px;}
+      .preview-item{padding:12px 13px;}
+      .floating-note{position:static;max-width:none;margin-top:10px;border-radius:14px;animation:none;}
+      .hero-interactions{grid-template-columns:1fr;gap:10px;}
+      .micro-card{padding:16px;border-radius:18px;}
+      .metrics-strip{padding-top:12px;}
+      .metrics-grid{gap:10px;}
+      .metric-tile{padding:16px;border-radius:18px;}
+      .metric-tile .n{font-size:28px;}
+      .section{padding:58px 0;}
+      .section-head{margin-bottom:30px;}
+      .section-head p{font-size:15px;}
+      .products-grid,.pricing-grid,.steps-grid,.visual-ideas,.calculator-grid,.value-grid,.testimonials-grid,.metrics-grid,.screen-bottom{grid-template-columns:1fr!important;}
+      .product-card,.price-card,.calc-card,.result-card,.value-card,.testimonial-main,.mini-quote,.idea,.step-card,.mock-photo{padding:20px;border-radius:20px;}
+      .product-card.featured{grid-column:auto;}
+      .amount,.price-big{font-size:38px;}
+      .result-value{font-size:42px;}
+      .quote{font-size:18px;}
+      .footer-top{align-items:flex-start;}
+      .sticky-mobile{display:block;}
+      body{padding-bottom:86px;}
+    }
+    @media (max-width: 560px){
+      .navbar{min-height:66px;gap:12px;}
+      .brand{gap:10px;}
+      .brand-mark{width:36px;height:36px;border-radius:12px;}
+      .brand-text{font-size:15px;}
+      .top-banner{font-size:11px;padding:9px 12px;}
+      .hero-tabs{grid-template-columns:1fr 1fr;}
+      .proof-inline,.hero-proofline{font-size:13px;}
+      .avatar{width:34px;height:34px;}
+      .button{min-height:50px;padding:0 18px;font-size:15px;}
+      .faq-item{padding:0 16px;}
+      .faq-q{padding:18px 0;font-size:15px;}
+    }
+  </style>
+
+</head>
+<body>
+  <div class="top-banner">Last updated March 2026</div>
+
+  <div class="navbar-wrap">
+    <div class="container navbar">
+      <a href="#top" class="brand">
+        <div class="brand-mark">TP</div>
+        <div class="brand-text">Theme Page Empire</div>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#products">Products</a>
+        <a href="#calculator">Profit Calculator</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#pricing" class="button button-secondary">See pricing</a>
+        <a href="#pricing" class="button button-primary">Get access →</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+    <div class="container mobile-nav" id="mobileNav">
+      <div class="stack">
+        <a href="#features">Features</a>
+        <a href="#products">Products</a>
+        <a href="#calculator">Profit Calculator</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#pricing" class="button button-primary button-full">Get access →</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-copy hero-shell">
+        <div class="hero-topbar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <div class="mini-badge">All-access system</div>
+        </div>
+
+        <div class="hero-main">
+          <div class="hero-left-panel">
+            <div class="hero-left-inner">
+              <div class="hero-kicker">Instagram Theme Pages</div>
+              <h1>Build your theme page.<br><span style="color:var(--lime)">Make it print money.</span></h1>
+              <p class="lead">The exact system to grow, monetize, and automate your Instagram theme page — even if you're starting from zero.</p>
+
+              <div class="hero-tabs" id="heroTabs">
+                <button class="hero-tab active" data-preview="bundle">Bundle</button>
+                <button class="hero-tab" data-preview="growth">Growth</button>
+                <button class="hero-tab" data-preview="monetize">Monetize</button>
+                <button class="hero-tab" data-preview="support">1:1 Chat</button>
+              </div>
+
+              <div class="hero-cta-row">
+                <a href="#pricing" class="button button-primary">Get instant access →</a>
+                <a href="#features" class="button button-secondary">See what's inside</a>
+              </div>
+
+              <div class="hero-proofline">
+                <div class="avatar-stack">
+                  <div class="avatar">SK</div>
+                  <div class="avatar">MT</div>
+                  <div class="avatar">JR</div>
+                  <div class="avatar">DM</div>
+                </div>
+                <span>Join 1,200+ creators already scaling</span>
+                <div class="proof-pill">3 guides + 41 prompts + 1:1 access</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-right-panel">
+            <div class="interactive-stage" id="interactiveStage">
+              <div class="preview-screen interactive-card">
+                <div class="preview-label" id="previewLabel">Featured bundle</div>
+                <div class="preview-title" id="previewTitle">The Faceless Bundle</div>
+                <div class="preview-sub" id="previewSub">The full system with the roadmap, monetization playbook, AI prompts and private 1:1 chat support.</div>
+                <div class="preview-stack" id="previewStack">
+                  <div class="preview-item active"><strong>Foundation Guide</strong><span>Start from zero</span></div>
+                  <div class="preview-item"><strong>Growth Roadmap</strong><span>Build momentum</span></div>
+                  <div class="preview-item"><strong>Monetization Playbook</strong><span>Turn attention into revenue</span></div>
+                  <div class="preview-item"><strong>41+ AI Prompts</strong><span>Scale faster</span></div>
+                </div>
+              </div>
+              <div class="floating-note" id="floatingNote">Interactive preview — click the tabs to change the focus.</div>
+            </div>
+
+            <div class="hero-interactions">
+              <div class="micro-card interactive-card" data-preview="growth">
+                <div class="small-label">Interactive zone</div>
+                <h4>Growth system</h4>
+                <p>Explore how the roadmap structures niche validation, setup and your first 10K followers.</p>
+              </div>
+              <div class="micro-card interactive-card" data-preview="monetize">
+                <div class="small-label">Interactive zone</div>
+                <h4>Revenue engine</h4>
+                <p>Preview the monetization framework: offers, shoutouts, funnels and affiliate flows.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container metrics-strip">
+        <div class="metrics-grid">
+          <div class="metric-tile"><div class="n">3</div><div class="t">Guides — Foundation, Growth &amp; Monetization</div></div>
+          <div class="metric-tile"><div class="n">41</div><div class="t">Expert-crafted AI prompts to build &amp; scale faster</div></div>
+          <div class="metric-tile"><div class="n">1</div><div class="t">Private 1:1 chat access</div></div>
+          <div class="metric-tile"><div class="n">♾</div><div class="t">Instant delivery and lifetime access</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">What You Get</span>
+          <h2 style="margin-top:18px">Everything packed in one system.</h2>
+          <p>No fluff. No filler. Just the exact blueprint, restructured with a cleaner premium flow.</p>
+        </div>
+
+        <div class="value-grid">
+          <div class="panel value-card">
+            <span class="kicker">Core offer</span>
+            <h3 style="margin-top:10px">Your complete theme page toolkit.</h3>
+            <div class="bullets">
+              <div class="bullet"><div class="icon">✓</div><div>Clear product ladder from free entry point to premium bundle.</div></div>
+              <div class="bullet"><div class="icon">✓</div><div>Premium offer framing for The Faceless Bundle without touching the original pricing.</div></div>
+              <div class="bullet"><div class="icon">✓</div><div>High-contrast sections, rounded blocks, stronger visual rhythm, and more “Webflow-style” hierarchy.</div></div>
+              <div class="bullet"><div class="icon">✓</div><div>Photo placeholders and visual direction so the client can immediately see what assets would elevate the page.</div></div>
+            </div>
+          </div>
+
+          <div class="photo-grid">
+            <div class="mock-photo big glass">
+              <div class="small">Interactive section #1</div>
+              <div>
+                <h4>Offer architecture</h4>
+                <p>Break the offer into clear steps, benefits and outcomes inside modular blocks.</p>
+              </div>
+            </div>
+            <div class="mock-photo glass">
+              <div class="small">Interactive section #2</div>
+              <div>
+                <h4>IG analytics or growth screenshot</h4>
+                <p>Best used next to the calculator or testimonials.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="products">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">The Products</span>
+          <h2 style="margin-top:18px">The same content, repackaged with a stronger sales flow.</h2>
+          <p>Products, names, and prices remain intact. Only the presentation has been upgraded.</p>
+        </div>
+
+        <div class="products-grid">
+          <article class="panel product-card">
+            <div class="card-top">
+              <span class="pill-price">FREE</span>
+              <span class="sold">⬇ +6,400 downloads</span>
+            </div>
+            <h3 style="margin-top:18px">The Foundation</h3>
+            <p>A basic guide introducing beginners to the Instagram theme page business. Learn what they are, why they work, top niches, and realistic earnings.</p>
+            <div class="product-features">
+              <div><i>✓</i><span>What theme pages are &amp; why they work</span></div>
+              <div><i>✓</i><span>Top profitable niches breakdown</span></div>
+              <div><i>✓</i><span>Realistic earnings expectations</span></div>
+              <div><i>✓</i><span>Getting started checklist</span></div>
+            </div>
+            <div class="product-footer"><a href="#pricing" class="button button-secondary button-full">Download Free →</a></div>
+          </article>
+
+          <article class="panel product-card">
+            <div class="card-top">
+              <span class="pill-price">$17</span>
+              <span class="sold">🛒 +450 sold</span>
+            </div>
+            <h3 style="margin-top:18px">The Roadmap</h3>
+            <p>The step-by-step e-book to grow your theme page from zero. Niche validation, page setup, content systems, and your first 10K followers.</p>
+            <div class="product-features">
+              <div><i>✓</i><span>Niche validation framework</span></div>
+              <div><i>✓</i><span>Page setup &amp; branding guide</span></div>
+              <div><i>✓</i><span>Content systems that scale</span></div>
+              <div><i>✓</i><span>First 10K followers blueprint</span></div>
+            </div>
+            <div class="product-footer"><a href="#pricing" class="button button-secondary button-full">Get the Roadmap →</a></div>
+          </article>
+
+          <article class="panel product-card">
+            <div class="card-top">
+              <span class="pill-price">$27</span>
+              <span class="sold">🛒 +400 sold</span>
+            </div>
+            <h3 style="margin-top:18px">Monetization Playbook</h3>
+            <p>Turn followers into income. Master affiliates, digital products, shoutouts, DM funnels, scaling, and automation.</p>
+            <div class="product-features">
+              <div><i>✓</i><span>Affiliate marketing strategy</span></div>
+              <div><i>✓</i><span>Digital product creation</span></div>
+              <div><i>✓</i><span>Shoutout pricing &amp; outreach</span></div>
+              <div><i>✓</i><span>DM funnel setup</span></div>
+              <div><i>✓</i><span>Scaling &amp; automation systems</span></div>
+            </div>
+            <div class="product-footer"><a href="#pricing" class="button button-secondary button-full">Get the Playbook →</a></div>
+          </article>
+
+          <article class="panel product-card featured">
+            <div class="best-tag">🔥 Best Seller</div>
+            <div class="card-top">
+              <span class="pill-price primary">$67</span>
+              <span class="sold">🔥 +1,200 sold</span>
+            </div>
+            <h3 style="margin-top:18px">The Faceless Bundle</h3>
+            <p>The ultimate bundle. All 3 products plus private 1:1 support with me via Instagram and 41+ professionally curated AI prompts.</p>
+            <div class="pricing-line">
+              <div class="price-big">$67</div>
+              <div class="price-old">$497</div>
+              <div class="discount">93% off</div>
+            </div>
+            <div class="product-features">
+              <div><i>✓</i><span>The Foundation ebook</span></div>
+              <div><i>✓</i><span>The Growth Roadmap ebook</span></div>
+              <div><i>✓</i><span>The Monetization Playbook ebook</span></div>
+              <div><i>✓</i><span>41+ expert-crafted AI prompts to find niches, create hooks, write captions, build products &amp; scale faster</span></div>
+              <div><i>✓</i><span>Private 1:1 chat mentorship — includes niche validation, page audits, content &amp; algorithm guidance, affiliate setup, DM funnels &amp; launch strategy</span></div>
+            </div>
+            <div class="product-footer"><a href="#pricing" class="button button-primary button-full">Get the Full Bundle →</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="calculator">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Profit Calculator</span>
+          <h2 style="margin-top:18px">Calculate your monthly income.</h2>
+          <p>Drag the sliders. See the math.</p>
+        </div>
+
+        <div class="calculator-grid">
+          <div class="panel calc-card">
+            <div class="slider-group">
+              <div class="slider-head"><span>Followers</span><strong id="followersValue">10,000</strong></div>
+              <input id="followers" type="range" min="1000" max="100000" step="1000" value="10000">
+              <div class="ticks"><span>1K</span><span>25K</span><span>50K</span><span>75K</span><span>100K</span></div>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-head"><span>Conversion rate</span><strong id="conversionValue">2%</strong></div>
+              <input id="conversion" type="range" min="0.5" max="5" step="0.5" value="2">
+              <div class="ticks"><span>0.5%</span><span>1.5%</span><span>2.5%</span><span>3.5%</span><span>5%</span></div>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-head"><span>Product price</span><strong id="priceValue">$37</strong></div>
+              <input id="price" type="range" min="17" max="97" step="5" value="37">
+              <div class="ticks"><span>$17</span><span>$37</span><span>$57</span><span>$77</span><span>$97</span></div>
+            </div>
+          </div>
+
+          <div class="panel result-card">
+            <div>
+              <div class="result-label">Your estimated monthly revenue:</div>
+              <div class="result-value" id="revenue">$7,400</div>
+              <div class="result-notes">
+                <div><span style="color:var(--lime)">✓</span><span>Use this block as a trust-building conversion section.</span></div>
+                <div><span style="color:var(--lime)">✓</span><span>Best paired with a screenshot of IG analytics or Stripe earnings.</span></div>
+                <div><span style="color:var(--lime)">✓</span><span>*Results vary. Based on industry-standard conversion data.</span></div>
+              </div>
+            </div>
+            <a href="#pricing" class="button button-primary button-full">Get instant access →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">How It Works</span>
+          <h2 style="margin-top:18px">Three steps. Real results.</h2>
+        </div>
+
+        <div class="steps-grid">
+          <article class="panel step-card">
+            <div class="step-num">1</div>
+            <h3 style="margin-top:16px">Pick your blueprint</h3>
+            <p>Start with the free guide or go straight into the bundle if you're serious about speed.</p>
+          </article>
+          <article class="panel step-card">
+            <div class="step-num">2</div>
+            <h3 style="margin-top:16px">Follow the system</h3>
+            <p>Use the roadmap, prompts, and monetization playbook to build and grow with clarity.</p>
+          </article>
+          <article class="panel step-card">
+            <div class="step-num">3</div>
+            <h3 style="margin-top:16px">Monetize and scale</h3>
+            <p>Turn attention into revenue with products, affiliate offers, shoutouts, and DM funnels.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Results</span>
+          <h2 style="margin-top:18px">Creators who ran the system.</h2>
+        </div>
+
+        <div class="testimonials-grid">
+          <article class="panel testimonial-main">
+            <div class="stars">★★★★★</div>
+            <div class="quote">“I quit my 9-5 after 4 months of running theme pages. The complete roadmap gave me the exact framework I needed. Now I'm making $3,500/month from two pages.”</div>
+            <div class="person">
+              <div class="person-badge">DM</div>
+              <div><strong>Daniel M.</strong></div>
+            </div>
+          </article>
+
+          <div class="mini-quotes">
+            <article class="panel mini-quote">
+              <div class="stars">★★★★★</div>
+              <p>“I made $1,200 in my first month just following the roadmap step by step. This is legit.”</p>
+              <div class="person"><div class="person-badge">SK</div><div><strong>Sarah K.</strong></div></div>
+            </article>
+            <article class="panel mini-quote">
+              <div class="stars">★★★★★</div>
+              <p>“The AI prompts alone saved me 10+ hours a week on content creation. Total game changer.”</p>
+              <div class="person"><div class="person-badge">MT</div><div><strong>Marcus T.</strong></div></div>
+            </article>
+            <article class="panel mini-quote">
+              <div class="stars">★★★★★</div>
+              <p>“Went from 0 to 10K followers in 6 weeks. The niche selection guide was the key.”</p>
+              <div class="person"><div class="person-badge">JR</div><div><strong>Jess R.</strong></div></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Pricing</span>
+          <h2 style="margin-top:18px">Start free. Scale fast.</h2>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="panel price-card">
+            <div class="small">FREE</div>
+            <h3 style="margin-top:14px">The Foundation</h3>
+            <div class="amount">$0</div>
+            <div class="sold">⬇ +6,400 downloads</div>
+            <div class="product-features">
+              <div><i>✓</i><span>Intro to theme pages</span></div>
+              <div><i>✓</i><span>Top niches breakdown</span></div>
+              <div><i>✓</i><span>Realistic earnings guide</span></div>
+            </div>
+            <div class="product-footer"><a href="#" class="button button-secondary button-full">Download Free →</a></div>
+          </article>
+
+          <article class="panel price-card">
+            <div class="small">E-BOOK</div>
+            <h3 style="margin-top:14px">The Roadmap</h3>
+            <div class="amount">$17</div>
+            <div class="sold">🛒 +450 sold</div>
+            <div class="product-features">
+              <div><i>✓</i><span>Niche validation</span></div>
+              <div><i>✓</i><span>Page setup &amp; branding</span></div>
+              <div><i>✓</i><span>Content systems</span></div>
+              <div><i>✓</i><span>First 10K followers blueprint</span></div>
+            </div>
+            <div class="product-footer"><a href="#" class="button button-secondary button-full">Get the Roadmap →</a></div>
+          </article>
+
+          <article class="panel price-card">
+            <div class="small">E-BOOK</div>
+            <h3 style="margin-top:14px">Monetization Playbook</h3>
+            <div class="amount">$27</div>
+            <div class="sold">🛒 +400 sold</div>
+            <div class="product-features">
+              <div><i>✓</i><span>Affiliate strategy</span></div>
+              <div><i>✓</i><span>Digital products</span></div>
+              <div><i>✓</i><span>Shoutouts &amp; DM funnels</span></div>
+              <div><i>✓</i><span>Scaling &amp; automation</span></div>
+            </div>
+            <div class="product-footer"><a href="#" class="button button-secondary button-full">Get the Playbook →</a></div>
+          </article>
+
+          <article class="panel price-card highlight">
+            <div class="small">FULL BUNDLE</div>
+            <h3 style="margin-top:14px">The Faceless Bundle</h3>
+            <div class="amount">$67 <span>$497</span></div>
+            <div class="sold">🔥 +1,200 sold</div>
+            <div class="product-features">
+              <div><i>✓</i><span>The Foundation ebook</span></div>
+              <div><i>✓</i><span>The Growth Roadmap ebook</span></div>
+              <div><i>✓</i><span>The Monetization Playbook ebook</span></div>
+              <div><i>✓</i><span>41+ AI prompts to find niches, create content &amp; scale</span></div>
+              <div><i>✓</i><span>1:1 chat mentorship — audits, funnels &amp; strategy</span></div>
+            </div>
+            <div class="product-footer"><a href="#" class="button button-primary button-full">Get the Bundle →</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Photo Direction</span>
+          <h2 style="margin-top:18px">Suggested visuals to make it feel more premium.</h2>
+          <p>These are suggestions only, so the client has a clear art direction without changing the original offer.</p>
+        </div>
+
+        <div class="visual-ideas">
+          <article class="panel idea">
+            <h3>1. Product mockup</h3>
+            <p>Use a stacked ebook / bundle render on a soft lime-to-dark background. Best for hero and pricing sections.</p>
+          </article>
+          <article class="panel idea">
+            <h3>2. Analytics screenshot</h3>
+            <p>Add a clean Instagram insights or Stripe-style revenue screenshot to support the calculator and testimonials.</p>
+          </article>
+          <article class="panel idea">
+            <h3>3. Creator lifestyle shot</h3>
+            <p>Minimal desk setup, iPhone, MacBook, coffee, and a dashboard on screen. Great for trust and perceived legitimacy.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">FAQ</span>
+          <h2 style="margin-top:18px">Common questions.</h2>
+        </div>
+
+        <div class="faq">
+          <article class="panel faq-item active">
+            <div class="faq-q"><span>What exactly is included?</span><span class="faq-icon">＋</span></div>
+            <div class="faq-a">You get access to The Foundation (free guide), The Growth Roadmap, The Monetization Playbook, 41+ expert-crafted AI prompts, and private 1:1 chat mentorship. Everything is delivered digitally — instant access.</div>
+          </article>
+          <article class="panel faq-item">
+            <div class="faq-q"><span>Who is this for?</span><span class="faq-icon">＋</span></div>
+            <div class="faq-a">Anyone who wants to build an Instagram theme page and monetize it. Whether you're a complete beginner or already have a page, the system meets you where you are.</div>
+          </article>
+          <article class="panel faq-item">
+            <div class="faq-q"><span>How fast can I see results?</span><span class="faq-icon">＋</span></div>
+            <div class="faq-a">Results depend on your effort, consistency, and niche. Most people see their first growth within the first week. Monetization typically starts within 30 days if you follow the roadmap consistently.</div>
+          </article>
+          <article class="panel faq-item">
+            <div class="faq-q"><span>Is there a refund policy?</span><span class="faq-icon">＋</span></div>
+            <div class="faq-a">Yes. If you're not satisfied within 30 days, reach out and we'll refund you — no questions asked.</div>
+          </article>
+          <article class="panel faq-item">
+            <div class="faq-q"><span>What format are the products in?</span><span class="faq-icon">＋</span></div>
+            <div class="faq-a">All products are digital PDFs and prompt files. You get instant access after purchase — no waiting, no shipping.</div>
+          </article>
+          <article class="panel faq-item">
+            <div class="faq-q"><span>Do I need a large following to start?</span><span class="faq-icon">＋</span></div>
+            <div class="faq-a">Not at all. The system is designed for people starting from zero. You'll learn how to grow from scratch.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cta-final">
+      <div class="container">
+        <div class="panel cta-wrap">
+          <span class="eyebrow">Final CTA</span>
+          <h2 style="margin-top:18px">Your theme page won't build itself.</h2>
+          <p>Everyone who's printing $2K-$10K/month started exactly where you are.</p>
+          <div style="margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+            <a href="#pricing" class="button button-primary">Get Instant Access →</a>
+            <a href="#products" class="button button-secondary">Review the products</a>
+          </div>
+          <div style="margin-top:14px;color:#aab395;font-size:14px">Instant digital delivery · No fluff · Lifetime access</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div style="font-weight:900;letter-spacing:-.03em">Theme Page Empire</div>
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-note">Disclaimer: Results are not guaranteed and depend on your effort, consistency, niche selection, and dedication. This is an educational product — not a get-rich-quick scheme. Individual outcomes will vary.</div>
+    </div>
+  </footer>
+
+  <div class="sticky-mobile">
+    <a href="#pricing" class="button button-primary button-full">Get instant access →</a>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    toggle.addEventListener('click', () => {
+      mobileNav.classList.toggle('show');
+      toggle.textContent = mobileNav.classList.contains('show') ? '✕' : '☰';
+    });
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('show');
+        toggle.textContent = '☰';
+      });
+    });
+
+    const followers = document.getElementById('followers');
+    const conversion = document.getElementById('conversion');
+    const price = document.getElementById('price');
+    const followersValue = document.getElementById('followersValue');
+    const conversionValue = document.getElementById('conversionValue');
+    const priceValue = document.getElementById('priceValue');
+    const revenue = document.getElementById('revenue');
+
+    function formatNumber(num){ return new Intl.NumberFormat('en-US').format(num); }
+    function updateRevenue(){
+      const f = Number(followers.value);
+      const c = Number(conversion.value);
+      const p = Number(price.value);
+      const result = Math.round(f * (c / 100) * p);
+      followersValue.textContent = formatNumber(f);
+      conversionValue.textContent = `${c}%`;
+      priceValue.textContent = `$${p}`;
+      revenue.textContent = `$${formatNumber(result)}`;
+    }
+    [followers, conversion, price].forEach(el => el.addEventListener('input', updateRevenue));
+    updateRevenue();
+
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.querySelector('.faq-q').addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+    });
+  </script>
+
+  <script>
+    const heroContent = {
+      bundle: {
+        label: 'Featured bundle',
+        title: 'The Faceless Bundle',
+        sub: 'The full system with the roadmap, monetization playbook, AI prompts and private 1:1 chat support.',
+        note: 'Best for users who want the whole system in one offer.',
+        items: [
+          ['Foundation Guide','Start from zero'],
+          ['Growth Roadmap','Build momentum'],
+          ['Monetization Playbook','Turn attention into revenue'],
+          ['41+ AI Prompts','Scale faster']
+        ]
+      },
+      growth: {
+        label: 'Growth focus',
+        title: 'Grow with a clear roadmap',
+        sub: 'A cleaner path from niche validation to setup, content rhythm and first traction.',
+        note: 'Designed to make the path feel structured and easy to scan.',
+        items: [
+          ['Niche Validation','Choose with logic'],
+          ['Profile Setup','Look credible fast'],
+          ['Content System','Post with consistency'],
+          ['First 10K Plan','Scale with intent']
+        ]
+      },
+      monetize: {
+        label: 'Monetization focus',
+        title: 'Turn attention into revenue',
+        sub: 'Show how shoutouts, digital products, affiliate offers and DM funnels connect together.',
+        note: 'This area helps the page feel more conversion-led and less generic.',
+        items: [
+          ['Affiliate Offers','Monetize audience fit'],
+          ['Digital Products','Package knowledge'],
+          ['Shoutouts','Sell attention cleanly'],
+          ['DM Funnels','Capture intent']
+        ]
+      },
+      support: {
+        label: 'Support focus',
+        title: 'Private 1:1 chat access',
+        sub: 'A premium support layer that adds confidence, guidance and perceived value to the bundle.',
+        note: 'Great interactive angle for showing premium differentiation.',
+        items: [
+          ['Niche Feedback','Validate direction'],
+          ['Page Audits','Spot weak points'],
+          ['Launch Guidance','Move faster'],
+          ['Strategy Support','Stay accountable']
+        ]
+      }
+    };
+
+    const tabs = document.querySelectorAll('.hero-tab, .micro-card[data-preview]');
+    const titleEl = document.getElementById('previewTitle');
+    const labelEl = document.getElementById('previewLabel');
+    const subEl = document.getElementById('previewSub');
+    const stackEl = document.getElementById('previewStack');
+    const noteEl = document.getElementById('floatingNote');
+
+    function setPreview(key){
+      const data = heroContent[key];
+      if(!data) return;
+      labelEl.textContent = data.label;
+      titleEl.textContent = data.title;
+      subEl.textContent = data.sub;
+      noteEl.textContent = data.note;
+      stackEl.innerHTML = data.items.map((item, idx) => `<div class="preview-item ${idx===0?'active':''}"><strong>${item[0]}</strong><span>${item[1]}</span></div>`).join('');
+      document.querySelectorAll('.hero-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.preview===key));
+    }
+
+    tabs.forEach(el => el.addEventListener('click', () => setPreview(el.dataset.preview)));
+
+    const stage = document.getElementById('interactiveStage');
+    if(stage){
+      stage.addEventListener('mousemove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        stage.querySelector('.preview-screen').style.transform = `rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`;
+      });
+      stage.addEventListener('mouseleave', () => {
+        stage.querySelector('.preview-screen').style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+    }
+  </script>
+
+</body>
+</html>
