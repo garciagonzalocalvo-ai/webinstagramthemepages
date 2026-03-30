@@ -1,1 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Error</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
 
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Tahoma, "MS Sans Serif", sans-serif;
+      background: #d9d9d9;
+    }
+
+    body {
+      position: relative;
+    }
+
+    .screen {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #d9d9d9;
+      transition: filter 2.8s ease, background 2.8s ease;
+    }
+
+    .window {
+      position: absolute;
+      background: #c0c0c0;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    .title-bar {
+      height: 30px;
+      background: linear-gradient(90deg, #163aa8, #2d9cff);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .title-close {
+      width: 22px;
+      height: 22px;
+      background: #c0c0c0;
+      color: #000;
+      border: 1px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .content {
+      padding: 24px 20px 20px;
+    }
+
+    .message-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .error-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #ff1d1d;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .error-icon::before,
+    .error-icon::after {
+      content: "";
+      position: absolute;
+      top: 19px;
+      left: 8px;
+      width: 26px;
+      height: 4px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    .error-icon::before { transform: rotate(45deg); }
+    .error-icon::after { transform: rotate(-45deg); }
+
+    .message-text {
+      color: #111;
+      font-size: 16px;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      min-width: 120px;
+      padding: 8px 18px;
+      background: #c0c0c0;
+      border: 2px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      font-size: 15px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn:active {
+      border: 2px solid #404040;
+      border-right-color: #fff;
+      border-bottom-color: #fff;
+    }
+
+    .main-window {
+      width: 440px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+
+    .popup {
+      width: 320px;
+      z-index: 20;
+    }
+
+    .popup .content {
+      padding: 18px 16px 16px;
+    }
+
+    .popup .message-text {
+      font-size: 15px;
+    }
+
+    .popup .buttons {
+      margin-top: 18px;
+      gap: 14px;
+    }
+
+    .popup .btn {
+      min-width: 90px;
+      font-size: 14px;
+      padding: 7px 12px;
+      cursor: default;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #555;
+      font-size: 14px;
+      z-index: 6;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(217, 217, 217, 0.75);
+      z-index: 1000;
+    }
+
+    .dialog-box {
+      width: min(620px, 92vw);
+      background: #c0c0c0;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    .dialog-content {
+      padding: 26px;
+    }
+
+    .dialog-title {
+      font-size: 30px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 14px;
+    }
+
+    .dialog-subtitle {
+      font-size: 17px;
+      color: #222;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 20px;
+      color: #111;
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .task-list li::before {
+      content: "- ";
+    }
+
+    .progress-outer {
+      width: 100%;
+      height: 30px;
+      background: #b7b7b7;
+      border: 2px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      padding: 2px;
+      margin-top: 6px;
+    }
+
+    .progress-inner {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #163aa8, #2d9cff);
+      transition: width 0.08s linear;
+    }
+
+    .progress-label {
+      margin-top: 10px;
+      font-size: 15px;
+      text-align: right;
+      color: #111;
+    }
+
+    .blackout {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+      z-index: 2000;
+      transition: opacity 3.5s ease;
+      pointer-events: none;
+    }
+
+    .final-message {
+      position: fixed;
+      inset: 0;
+      z-index: 2100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      color: #fff;
+      font-weight: 900;
+      font-size: clamp(30px, 5vw, 80px);
+      text-align: center;
+      line-height: 1.2;
+      padding: 30px;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen" id="screen">
+    <div class="window main-window">
+      <div class="title-bar">
+        <span>System Error</span>
+        <div class="title-close">×</div>
+      </div>
+      <div class="content">
+        <div class="message-row">
+          <div class="error-icon"></div>
+          <div class="message-text">Runtime error.
+Press Ok to Continue.
+Press Cancel to Quit.</div>
+        </div>
+        <div class="buttons">
+          <div class="btn">OK</div>
+          <div class="btn">Cancel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hint" id="hint">Esperando respuesta del sistema...</div>
+
+    <div class="overlay" id="confirmOverlay">
+      <div class="dialog-box">
+        <div class="title-bar">
+          <span>System Reset</span>
+          <button class="title-close" id="confirmClose" type="button">×</button>
+        </div>
+        <div class="dialog-content">
+          <div class="dialog-title">Modo broma activado</div>
+          <div class="dialog-subtitle">¿Quieres continuar con la animación final?</div>
+          <div class="buttons">
+            <button class="btn" id="yesBtn" type="button">Sí</button>
+            <button class="btn" id="noBtn" type="button">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="resetOverlay">
+      <div class="dialog-box">
+        <div class="title-bar">
+          <span>Animation Progress</span>
+          <div class="title-close">×</div>
+        </div>
+        <div class="dialog-content">
+          <div class="dialog-title">Perfecto, preparando la sorpresa</div>
+          <div class="dialog-subtitle">Se están ejecutando estas animaciones:</div>
+          <ul class="task-list">
+            <li>limpiando la pantalla</li>
+            <li>apagando el fondo</li>
+            <li>ocultando las ventanas</li>
+            <li>mostrando el mensaje final</li>
+          </ul>
+          <div class="progress-outer">
+            <div class="progress-inner" id="progressInner"></div>
+          </div>
+          <div class="progress-label" id="progressLabel">0%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blackout" id="blackout"></div>
+  <div class="final-message" id="finalMessage">ERA UNA BROMA JA JA JA😎🎞️🤣</div>
+
+  <script>
+    const screen = document.getElementById("screen");
+    const hint = document.getElementById("hint");
+    const confirmOverlay = document.getElementById("confirmOverlay");
+    const resetOverlay = document.getElementById("resetOverlay");
+    const progressInner = document.getElementById("progressInner");
+    const progressLabel = document.getElementById("progressLabel");
+    const blackout = document.getElementById("blackout");
+    const finalMessage = document.getElementById("finalMessage");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const confirmClose = document.getElementById("confirmClose");
+
+    const popups = [];
+    let popupSpawner = null;
+    let popupCount = 0;
+    let chaosActive = false;
+    let finished = false;
+
+    function randomBetween(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function createPopup() {
+      if (!chaosActive || finished) return;
+
+      const popup = document.createElement("div");
+      popup.className = "window popup";
+      popup.innerHTML = `
+        <div class="title-bar">
+          <span>System Error</span>
+          <div class="title-close">×</div>
+        </div>
+        <div class="content">
+          <div class="message-row">
+            <div class="error-icon"></div>
+            <div class="message-text">Critical exception detected.
+Animated popup demo.</div>
+          </div>
+          <div class="buttons">
+            <div class="btn">OK</div>
+            <div class="btn">Cancel</div>
+          </div>
+        </div>
+      `;
+
+      const width = 320;
+      const height = 170;
+
+      popup.style.left = `${randomBetween(10, Math.max(20, window.innerWidth - width - 10))}px`;
+      popup.style.top = `${randomBetween(10, Math.max(20, window.innerHeight - height - 10))}px`;
+
+      const state = {
+        el: popup,
+        vx: randomBetween(-2.6, 2.6) || 2,
+        vy: randomBetween(-2.6, 2.6) || -2
+      };
+
+      popups.push(state);
+      screen.appendChild(popup);
+      popupCount++;
+    }
+
+    function animatePopups() {
+      for (const state of popups) {
+        if (!state.el.isConnected) continue;
+
+        const rect = state.el.getBoundingClientRect();
+        let left = rect.left + state.vx;
+        let top = rect.top + state.vy;
+
+        if (left <= 0 || left >= window.innerWidth - rect.width) {
+          state.vx *= -1;
+          left = clamp(left, 0, window.innerWidth - rect.width);
+        }
+
+        if (top <= 0 || top >= window.innerHeight - rect.height) {
+          state.vy *= -1;
+          top = clamp(top, 0, window.innerHeight - rect.height);
+        }
+
+        state.el.style.left = `${left}px`;
+        state.el.style.top = `${top}px`;
+      }
+
+      requestAnimationFrame(animatePopups);
+    }
+
+    function startChaos() {
+      chaosActive = true;
+      hint.textContent = "Error crítico detectado...";
+      createPopup();
+      createPopup();
+      createPopup();
+
+      popupSpawner = setInterval(() => {
+        if (popupCount < 18) createPopup();
+      }, 900);
+    }
+
+    function stopChaosAndAsk() {
+      chaosActive = false;
+      if (popupSpawner) clearInterval(popupSpawner);
+      hint.textContent = "Animación lista.";
+      confirmOverlay.style.display = "flex";
+    }
+
+    function beginFinalSequence() {
+      if (finished) return;
+      finished = true;
+
+      confirmOverlay.style.display = "none";
+      resetOverlay.style.display = "flex";
+      hint.textContent = "Preparando sorpresa final...";
+      startProgressBar();
+    }
+
+    function startProgressBar() {
+      const duration = 7000;
+      const start = performance.now();
+
+      function step(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const percent = Math.round(progress * 100);
+
+        progressInner.style.width = `${percent}%`;
+        progressLabel.textContent = `${percent}%`;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          fadeToBlack();
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function fadeToBlack() {
+      screen.style.filter = "blur(10px) brightness(0.2)";
+      blackout.style.opacity = "1";
+
+      setTimeout(() => {
+        resetOverlay.style.display = "none";
+        hint.style.display = "none";
+        finalMessage.style.opacity = "1";
+      }, 3500);
+    }
+
+    yesBtn.addEventListener("click", beginFinalSequence);
+    noBtn.addEventListener("click", beginFinalSequence);
+    confirmClose.addEventListener("click", beginFinalSequence);
+
+    confirmOverlay.addEventListener("click", (e) => {
+      if (e.target === confirmOverlay) beginFinalSequence();
+    });
+
+    window.addEventListener("resize", () => {
+      for (const state of popups) {
+        if (!state.el.isConnected) continue;
+        const rect = state.el.getBoundingClientRect();
+        state.el.style.left = `${clamp(rect.left, 0, window.innerWidth - rect.width)}px`;
+        state.el.style.top = `${clamp(rect.top, 0, window.innerHeight - rect.height)}px`;
+      }
+    });
+
+    animatePopups();
+
+    setTimeout(startChaos, 10000);
+    setTimeout(stopChaosAndAsk, 20000);
+  </script>
+</body>
+</html>
